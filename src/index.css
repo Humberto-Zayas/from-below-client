@@ -7,6 +7,136 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+body {
+  scroll-behavior: smooth;
+}
+
+.div-block-57 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.div-block-57 .list-item-4 {
+  margin: 0;
+}
+
+.MuiStepLabel-labelContainer > .Mui-active {
+  color: white !important;
+}
+.MuiStepLabel-labelContainer > .Mui-completed {
+  color: white !important;
+}
+.MuiStepLabel-labelContainer > .Mui-disabled {
+  color: gray !important;
+}
+
+.MuiStepLabel-iconContainer > .Mui-active {
+  color: #d1203d !important;
+}
+
+input, textarea { 
+  color: whitesmoke !important;
+}
+
+/*Change text in autofill textbox*/
+input:-webkit-autofill{
+  /* -webkit-text-fill-color: yellow !important; */
+  background-image: none !important;
+  background-color: -internal-light-dark(transparent) !important;
+}
+
+/* .contactClass input::placeholder {
+  color: white;
+} */
+
+label {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.shontainer {
+  display: flex;
+  justify-content: center;
+  /* Center items horizontally */
+  align-items: center;
+  /* Center items vertically */
+}
+
+.shontainer> :first-child {
+  margin-left: 0;
+  /* Remove left margin from first item */
+}
+
+.shontainer>* {
+  margin-right: auto;
+  /* Add automatic left margin to all items except the first one */
+}
+/* 
+.section {
+  height: 100vh;
+} */
+
+.hero {
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-image: -webkit-linear-gradient(90deg, #111010, rgba(0, 0, 0, 0.55) 71%, rgba(0, 0, 0, 0.86) 96%), url('./images/IMG_20170722_142734_347_1500772896518.jpg');
+  background-image: linear-gradient(0deg, #111010, rgba(0, 0, 0, 0.55) 71%, rgba(0, 0, 0, 0.86) 96%), url('./images/IMG_20170722_142734_347_1500772896518.jpg');
+  background-position: 0px 0px, 50% 100%;
+  background-size: auto, cover;
+  background-repeat: repeat, no-repeat;
+  background-attachment: scroll, scroll;
+}
+
+.services {
+  min-height: 100vh;
+  height: auto;
+  background-image: -webkit-linear-gradient(270deg, #111, transparent 20%, rgba(0, 0, 0, 0.75) 80%, #111), url('./images/avalong-demoshot.jpg');
+  background-image: linear-gradient(180deg, #111, transparent 20%, rgba(0, 0, 0, 0.75) 80%, #111), url('./images/avalong-demoshot.jpg');
+  background-position: 0px 0px, 50% 50%;
+  background-size: auto, cover;
+  background-attachment: scroll, scroll;
+}
+
+.pricing {
+  min-height: 100vh;
+  height: auto;
+  background-image: -webkit-linear-gradient(90deg, #111010, rgba(13, 12, 12, 0.88) 20%, rgba(0, 0, 0, 0.65) 50%, rgba(13, 12, 12, 0.88) 80%, #111010), url('./images/mock-floor.jpg');
+  background-image: linear-gradient(0deg, #111010, rgba(13, 12, 12, 0.88) 20%, rgba(0, 0, 0, 0.65) 50%, rgba(13, 12, 12, 0.88) 80%, #111010), url('./images/mock-floor.jpg');
+  background-position: 0px 0px, 50% 50%;
+  background-size: auto, cover;
+  background-repeat: repeat, no-repeat;
+  background-attachment: scroll, fixed;
+}
+
+.about {
+  background-image: -webkit-linear-gradient(270deg, #111010, rgba(0, 0, 0, 0.65) 20%, rgba(0, 0, 0, 0.65) 80%, #111010), url('./images/06-outboard-01-newbg.jpeg');
+    background-image: linear-gradient(180deg, #111010, rgba(0, 0, 0, 0.65) 20%, rgba(0, 0, 0, 0.65) 80%, #111010), url('./images/06-outboard-01-newbg.jpeg');
+    background-position: 0px 0px, 50% 0px;
+    background-size: auto, cover;
+    background-repeat: repeat, no-repeat;
+}
+
+.hero-h1 {
+  position: relative;
+}
+
+.hero-h1::after {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 1px;
+  background-color: red;
+  bottom: -0.1em;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -1,0 +1,32 @@
+.from-below-appbar {
+  background-color: black !important;
+  border-bottom: 1px solid rgb(49,49,49);
+}
+
+.side-drawer {
+  background-color: black !important;
+}
+
+.booking-drawer .MuiDrawer-paper {
+  background-color: black;
+  color: white;
+  max-width: 960px;
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 20px 20px 0 0;
+  border: 1px solid rgb(49, 49, 49);
+  border-bottom: none;
+}
+
+legend span {
+  color: white;
+}
+
+.save-button {
+  color: #00ffa2 !important;
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1)
+          brightness(50%)
+}
