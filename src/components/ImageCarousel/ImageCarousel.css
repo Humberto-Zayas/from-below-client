@@ -1,0 +1,21 @@
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .carousel-image {
+    width: 100%;
+    height: auto;
+    flex-shrink: 0;
+  }
+  .MuiMobileStepper-dot {
+    background-color: transparent !important;
+  }
+  .title {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    color: white;
+  }
+  /* Rest of your CSS remains the same */
+  

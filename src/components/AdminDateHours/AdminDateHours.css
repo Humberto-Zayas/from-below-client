@@ -1,0 +1,54 @@
+.MuiPickerStaticWrapper-content {
+  background-color: rgba(0,0,0,0.2) !important;
+}
+
+.MuiPickerStaticWrapper-content * {
+  color: white !important;
+}
+
+.MuiPickerStaticWrapper-content .MuiPickersDay-root {
+  background: rgba(66, 66, 66, 0.337) !important;
+}
+
+.MuiPickerStaticWrapper-content .Mui-selected {
+  background: #d1203d !important;
+}
+
+.MuiPickerStaticWrapper-content .Mui-disabled {
+  color: rgb(255 255 255 / 38%) !important;
+}
+
+.MuiListItemText-secondary {
+  color: rgba(255, 255, 255, 0.429) !important;
+}
+
+.MuiDialogActions-root {
+  display: none !important;
+}
+
+.MuiSwitch-root {
+  background: rgba(255 255 255 /10%);
+  border-radius: 20px;
+}
+
+.MuiSwitch-root .Mui-checked {
+  color: #d1213d !important;
+}
+
+.MuiSwitch-root  .MuiSwitch-track {
+  background-color: #d1203d !important;
+}
+
+
+
+.MuiIconButton-root {
+  color: white !important;
+}
+
+.MuiPickersArrowSwitcher-root .MuiIconButton-root {
+  color: black !important;
+}
+
+/* .MuiSwitch-root .MuiSwitch-thumb {
+  background-color: rgba(255, 255, 255, 0.1)
+} */
