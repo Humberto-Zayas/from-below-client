@@ -1,36 +1,6 @@
 import * as React from 'react';
-import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 
 export default function GeneralContact(props) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phoneNumber: '',
-    message: '',
-    referral: '',
-    howDidYouHear: '',
-  });
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-
-    // Pass the form data to the parent component
-    props.formCapture({
-      ...formData,
-      [name]: value, // Update the changed field
-      date: props.date,
-      hours: props.hours
-    });
-  };
 
   return (
     <>
@@ -43,7 +13,7 @@ export default function GeneralContact(props) {
           <a href="tel:609-469-4340" class="link-3">609-469-4340<br></br></a><span><span><span data-ix="contact-section-reveal" onClick={props.onClose} class="text-span-26"></span></span></span></h5>
         <div class="form-normal-social" style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: 0 }}>
           <span class="text-span-29"></span>
-          <a href="https://instagram.com/frombelowstudio" target="_blank" style={{ marginRight: '10px' }} class="link-12"></a> | <a style={{ marginRight: '10px', marginLeft: '10px' }} href="https://twitter.com/frombelowstudio" target="_blank" class="link-5"></a> | <a style={{ marginLeft: '10px' }} href="https://facebook.com/frombelowstudio" target="_blank" class="link-6"></a>
+          <a href="https://instagram.com/frombelowstudio" target="_blank" rel="noreferrer" style={{ marginRight: '10px' }} class="link-12"></a> | <a style={{ marginRight: '10px', marginLeft: '10px' }} href="https://twitter.com/frombelowstudio" target="_blank"  rel="noreferrer" class="link-5"></a> | <a style={{ marginLeft: '10px' }} href="https://facebook.com/frombelowstudio" target="_blank" rel="noreferrer" class="link-6"></a>
         </div>
         <div class="w-form">
           <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>

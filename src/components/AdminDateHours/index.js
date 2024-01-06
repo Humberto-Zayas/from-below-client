@@ -4,7 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Grid, List, ListItem, ListItemText, Switch, TextField, Typography } from '@mui/material';
+import { Grid, List, ListItem, ListItemText, Switch, TextField } from '@mui/material';
 import './AdminDateHours.css';
 
 const hourOptions = [
@@ -34,7 +34,7 @@ export default function AdminDateHours() {
   }, [value]);
 
   useEffect(() => {
-    const maxDateUrl = '/api/getMaxDate'; // API endpoint to fetch max date
+    const maxDateUrl = 'https://expressjs-mongoose-production-6969.up.railway.app/days/getMaxDate'; // API endpoint to fetch max date
     fetch(maxDateUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -101,7 +101,7 @@ export default function AdminDateHours() {
     setMaxDate(newMaxDate);
 
     // Post the updated maxDate to the API
-    const apiUrl = '/api/updateMaxDate';
+    const apiUrl = 'https://expressjs-mongoose-production-6969.up.railway.app/days/updateMaxDate';
     fetch(apiUrl, {
       method: 'POST',
       headers: {

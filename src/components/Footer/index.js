@@ -15,9 +15,8 @@ function Footer() {
             <div className="sbi_loader fa-spin"></div>
           </div>
           <div id="sbi_load">
-            <a className="sbi_load_btn" href="javascript:void(0);">Load More...</a>
             <div className="sbi_follow_btn">
-              <a href="https://instagram.com/" target="_blank"><i className="fa fa-instagram"></i> Follow on Instagram</a>
+              <a href="https://instagram.com/" rel="noreferrer" target="_blank"><i className="fa fa-instagram"></i> Follow on Instagram</a>
             </div>
           </div>
         </div>
