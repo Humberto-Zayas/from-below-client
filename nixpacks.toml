@@ -14,7 +14,6 @@
         'tar -zxvf caddy.tar.gz caddy', # only extract 'caddy' from the tarball
         'chmod +x caddy' # enable file execution for caddy, needed to execute downloaded files
     ]
-    
 
 # format the Caddyfile with fmt
 [phases.fmt]
