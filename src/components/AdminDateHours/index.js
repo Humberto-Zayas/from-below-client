@@ -22,7 +22,7 @@ export default function AdminDateHours() {
   const [dayData, setDayData] = useState(null);
 
   useEffect(() => {
-    const apiUrl = `/api/days/${value.format("YYYY-MM-DD")}`;
+    const apiUrl = `http://localhost:3333/days/${value.format("YYYY-MM-DD")}`;
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -34,7 +34,7 @@ export default function AdminDateHours() {
   }, [value]);
 
   useEffect(() => {
-    const maxDateUrl = 'https://expressjs-mongoose-production-6969.up.railway.app/days/getMaxDate'; // API endpoint to fetch max date
+    const maxDateUrl = 'http://localhost:3333/days/getMaxDate'; // API endpoint to fetch max date
     fetch(maxDateUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -72,7 +72,8 @@ export default function AdminDateHours() {
 
     setSelectedOptions(updatedOptions);
 
-    const apiUrl = "/api/updateOrCreateDay";
+    // const apiUrl = "https://expressjs-mongoose-production-6969.up.railway.app/days/updateOrCreateDay"; 
+    const apiUrl = "http://localhost:3333/days/updateOrCreateDay"; 
     fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -101,7 +102,8 @@ export default function AdminDateHours() {
     setMaxDate(newMaxDate);
 
     // Post the updated maxDate to the API
-    const apiUrl = 'https://expressjs-mongoose-production-6969.up.railway.app/days/updateMaxDate';
+    // const apiUrl = 'https://expressjs-mongoose-production-6969.up.railway.app/days/updateMaxDate';
+    const apiUrl = 'http://localhost:3333/days/updateMaxDate';
     fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -151,9 +153,12 @@ export default function AdminDateHours() {
             <Switch
               checked={dayData ? dayData.disabled : true}
               onChange={() => {
+                console.log('day data check: ', dayData)
                 if (!dayData) return;
-                const apiUrl = "/api/editDay";
+                const apiUrl = "http://localhost:3333/days/editDay";
                 const newDisabled = !dayData.disabled;
+
+                console.log('new Disabled date: ', newDisabled)
 
                 fetch(apiUrl, {
                   method: "POST",

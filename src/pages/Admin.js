@@ -64,7 +64,7 @@ const Admin = () => {
           },
         }}
       >
-        {isLoggedIn ? (
+        
           <Box
             sx={{
               position: 'fixed',
@@ -104,7 +104,7 @@ const Admin = () => {
             </List>
             <Divider />
           </Box>
-        ) : null}
+
         {/* <Container maxWidth="md" style={{ paddingTop: '7em' }}>
           {isLoggedIn ? (
             <>
@@ -121,6 +121,7 @@ const Admin = () => {
             <>
               {selectedComponent === 'dateHours' && <AdminDateHours />}
               {selectedComponent === 'bookings' && <AdminBookings />}
+              
             </>
           
         </Container>
