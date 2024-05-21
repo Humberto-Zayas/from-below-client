@@ -16,20 +16,23 @@ const hourOptions = [
 ];
 
 export default function AdminDateHours() {
-  const [value, setValue] = useState(dayjs());
+  const [value, setValue] = useState(dayjs().toISOString().split('T')[0]);
   const [maxDate, setMaxDate] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [dayData, setDayData] = useState(null);
+  console.log('day data: ', dayData);
 
   useEffect(() => {
-    const apiUrl = `http://localhost:3333/days/${value.format("YYYY-MM-DD")}`;
+    const apiUrl = `http://localhost:3333/days/days/${value}`;
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
         setDayData(data);
       })
       .catch((error) => {
         console.error("Error fetching day data:", error);
+        setDayData(value);
       });
   }, [value]);
 
@@ -43,7 +46,6 @@ export default function AdminDateHours() {
       .catch((error) => {
         console.error('Error fetching max date:', error);
       });
-
   }, []); // Empty dependency array to run only once on component mount
 
   useEffect(() => {
@@ -72,7 +74,6 @@ export default function AdminDateHours() {
 
     setSelectedOptions(updatedOptions);
 
-    // const apiUrl = "https://expressjs-mongoose-production-6969.up.railway.app/days/updateOrCreateDay"; 
     const apiUrl = "http://localhost:3333/days/updateOrCreateDay"; 
     fetch(apiUrl, {
       method: "POST",
@@ -101,8 +102,6 @@ export default function AdminDateHours() {
   const handleMaxDateChange = (newMaxDate) => {
     setMaxDate(newMaxDate);
 
-    // Post the updated maxDate to the API
-    // const apiUrl = 'https://expressjs-mongoose-production-6969.up.railway.app/days/updateMaxDate';
     const apiUrl = 'http://localhost:3333/days/updateMaxDate';
     fetch(apiUrl, {
       method: 'POST',
@@ -119,6 +118,36 @@ export default function AdminDateHours() {
       })
       .catch((error) => {
         console.error('Error updating max date:', error);
+      });
+  };
+
+  const handleDisabledToggle = () => {
+    if (!dayData) return;
+
+    const apiUrl = "http://localhost:3333/days/editDay";
+    const newDisabled = !dayData.disabled;
+
+    fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        date: value,
+        disabled: newDisabled,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const updatedSelectedOptions = selectedOptions.map(opt => ({
+          ...opt,
+          enabled: !newDisabled && opt.enabled, // Toggle off hours if day is disabled
+        }));
+        setSelectedOptions(updatedSelectedOptions);
+        setDayData(data);
+      })
+      .catch((error) => {
+        console.error("Error updating disabled:", error);
       });
   };
 
@@ -152,37 +181,7 @@ export default function AdminDateHours() {
             <ListItemText style={{ color: 'white' }} primary="Disabled" />
             <Switch
               checked={dayData ? dayData.disabled : true}
-              onChange={() => {
-                console.log('day data check: ', dayData)
-                if (!dayData) return;
-                const apiUrl = "http://localhost:3333/days/editDay";
-                const newDisabled = !dayData.disabled;
-
-                console.log('new Disabled date: ', newDisabled)
-
-                fetch(apiUrl, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    date: value.format("YYYY-MM-DD"),
-                    disabled: newDisabled,
-                  }),
-                })
-                  .then((response) => response.json())
-                  .then((data) => {
-                    const updatedSelectedOptions = selectedOptions.map(opt => ({
-                      ...opt,
-                      enabled: !newDisabled && opt.enabled, // Toggle off hours if day is disabled
-                    }));
-                    setSelectedOptions(updatedSelectedOptions);
-                    setDayData(data);
-                  })
-                  .catch((error) => {
-                    console.error("Error updating disabled:", error);
-                  });
-              }}
+              onChange={handleDisabledToggle}
             />
           </ListItem>
           {selectedOptions.map((option, index) => (
