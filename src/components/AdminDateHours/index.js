@@ -16,14 +16,13 @@ const hourOptions = [
 ];
 
 export default function AdminDateHours() {
-  const [value, setValue] = useState(dayjs().toISOString().split('T')[0]);
+  const [value, setValue] = useState(dayjs()); // gets current day
   const [maxDate, setMaxDate] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [dayData, setDayData] = useState(null);
-  console.log('day data: ', dayData);
 
   useEffect(() => {
-    const apiUrl = `http://localhost:3333/days/days/${value}`;
+    const apiUrl = `http://localhost:3333/days/days/${value.toISOString().split('T')[0]}`;
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
