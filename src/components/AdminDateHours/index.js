@@ -7,6 +7,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Grid, List, ListItem, ListItemText, Switch, TextField } from '@mui/material';
 import './AdminDateHours.css';
 
+const api = process.env.REACT_APP_API_URL;
+
 const hourOptions = [
   { label: '2 Hours', price: '$70' },
   { label: '4 Hours', price: '$130' },
@@ -22,7 +24,7 @@ export default function AdminDateHours() {
   const [dayData, setDayData] = useState(null);
 
   useEffect(() => {
-    const apiUrl = `http://localhost:3333/days/days/${value.toISOString().split('T')[0]}`;
+    const apiUrl = `${api}/days/days/${value.toISOString().split('T')[0]}`;
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -36,7 +38,7 @@ export default function AdminDateHours() {
   }, [value]);
 
   useEffect(() => {
-    const maxDateUrl = 'http://localhost:3333/days/getMaxDate'; // API endpoint to fetch max date
+    const maxDateUrl = `${api}/days/getMaxDate`; // API endpoint to fetch max date
     fetch(maxDateUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -73,7 +75,7 @@ export default function AdminDateHours() {
 
     setSelectedOptions(updatedOptions);
 
-    const apiUrl = "http://localhost:3333/days/updateOrCreateDay"; 
+    const apiUrl = `${api}/days/updateOrCreateDay`; 
     fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -101,7 +103,7 @@ export default function AdminDateHours() {
   const handleMaxDateChange = (newMaxDate) => {
     setMaxDate(newMaxDate);
 
-    const apiUrl = 'http://localhost:3333/days/updateMaxDate';
+    const apiUrl = `${api}/days/updateMaxDate`;
     fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -123,7 +125,7 @@ export default function AdminDateHours() {
   const handleDisabledToggle = () => {
     if (!dayData) return;
 
-    const apiUrl = "http://localhost:3333/days/editDay";
+    const apiUrl = `${api}/days/editDay`;
     const newDisabled = !dayData.disabled;
 
     fetch(apiUrl, {
