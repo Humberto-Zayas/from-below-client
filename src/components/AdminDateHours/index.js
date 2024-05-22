@@ -84,7 +84,7 @@ export default function AdminDateHours() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        date: value.format("YYYY-MM-DD"),
+        date: value,
         selectedHours: updatedOptions
           .filter((opt) => opt.enabled)
           .map((opt) => ({
