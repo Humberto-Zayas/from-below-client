@@ -18,17 +18,18 @@ const hourOptions = [
 ];
 
 export default function AdminDateHours() {
-  const [value, setValue] = useState(dayjs()); // gets current day
+  const [value, setValue] = useState(dayjs().format('YYYY-MM-DD')); // gets current day
   const [maxDate, setMaxDate] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [dayData, setDayData] = useState(null);
 
   useEffect(() => {
-    const apiUrl = `${api}/days/days/${value.toISOString().split('T')[0]}`;
+    console.log('value on useEffect: ', value)
+    const apiUrl = `${api}/days/days/${value}`;
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        console.log('get days/:date fetch: ', data)
         setDayData(data);
       })
       .catch((error) => {
@@ -63,7 +64,8 @@ export default function AdminDateHours() {
   }, [dayData]);
 
   const handleDatePick = (selectedDate) => {
-    setValue(selectedDate);
+    const formattedDate = selectedDate.toISOString().split('T')[0]
+    setValue(formattedDate);
   };
 
   const handleOptionToggle = (option) => {
