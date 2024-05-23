@@ -3,6 +3,7 @@ import { Button, Container, Grid, List, ListItem, ListItemText, Typography } fro
 import CheckIcon from '@mui/icons-material/Check';
 import BasicDatePicker from '../BasicDatePicker';
 import dayjs from 'dayjs';
+const api = process.env.REACT_APP_API_URL;
 
 const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
   const [day, setDay] = useState(dayjs(value).format('YYYY-MM-DD'));
@@ -19,7 +20,7 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
   ];
   useEffect(() => {
     // Fetch blackout days from your API
-    fetch('/api/blackoutDays')
+    fetch(`${api}/days/blackoutDays`)
       .then(response => response.json())
       .then(data => {
         setBlackoutDays(data);
@@ -30,7 +31,7 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
   }, []); // Run only once on component mount
 
   useEffect(() => {
-    const maxDateUrl = '/api/getMaxDate'; // API endpoint to fetch max date
+    const maxDateUrl = `${api}/days/getMaxDate`; // API endpoint to fetch max date
     fetch(maxDateUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -42,7 +43,7 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
   }, []); // Empty dependency array to run only once on component mount
 
   useEffect(() => {
-    fetch(`/api/days/${day}`)
+    fetch(`${api}/days/days/${day}`)
       .then(response => response.json())
       .then(data => {
         if (data && data.date && data.hours) {
@@ -85,7 +86,7 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
       const transformedHour = `${selectedHourOption.label}/${selectedHourOption.price}`;
       const transformedDay = dayjs(day).format('YYYY-MM-DD')
 
-      fetch(`/api/bookings/datehour/${id}`, {
+      fetch(`${api}/bookings/bookings/datehour/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

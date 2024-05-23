@@ -3,13 +3,14 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+const api = process.env.REACT_APP_API_URL;
 
 export default function SelectableHours(props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [enabledData, setEnabledData] = useState([]);
 
   useEffect(() => {
-    fetch(`/api/days/${props.recordingDate}`)
+    fetch(`${api}/days/days/${props.recordingDate}`)
       .then(response => response.json())
       .then(data => {
         if (data && data.date && data.hours) {

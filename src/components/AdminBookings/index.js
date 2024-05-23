@@ -6,6 +6,8 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import dayjs from 'dayjs';
 
+const api = process.env.REACT_APP_API_URL;
+
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [pastBookings, setPastBookings] = useState([]);
@@ -15,9 +17,11 @@ const AdminBookings = () => {
   const [sortOrder, setSortOrder] = useState('asc'); // Track sort order
 
   useEffect(() => {
-    fetch('/api/bookings')
+    const apiUrl = `${api}/bookings/bookings/`;
+    fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
+        console.log('use effect bookings fetch: ', data)
         const currentDate = dayjs().startOf('day');
         const upcomingBookings = data.filter((booking) =>
           dayjs(booking.date, 'YYYY-MM-DD').isSame(currentDate) || dayjs(booking.date, 'YYYY-MM-DD').isAfter(currentDate)
@@ -35,7 +39,7 @@ const AdminBookings = () => {
 
   const handleUpdateStatus = async (bookingId, newStatus) => {
     try {
-      const response = await fetch(`/api/bookings/${bookingId}`, {
+      const response = await fetch(`${api}/bookings/bookings/${bookingId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +65,7 @@ const AdminBookings = () => {
 
   const handleDeleteBooking = async (bookingId) => {
     try {
-      const response = await fetch(`/api/bookings/${bookingId}`, {
+      const response = await fetch(`${api}/bookings/bookings/${bookingId}`, {
         method: 'DELETE',
       });
       if (response.ok) {

@@ -11,6 +11,7 @@ import ContactForm from '../contactForm';
 import SelectableHours from '../SelectableHours';
 
 const steps = ['Pick A Date', 'Pick Your Hours', 'Enter Your Information'];
+const api = process.env.REACT_APP_API_URL;
 
 export default function HorizontalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -31,7 +32,7 @@ export default function HorizontalLinearStepper() {
 
   React.useEffect(() => {
     // Fetch blackout days from your API
-    fetch('/api/blackoutDays')
+    fetch(`${api}/days/blackoutDays`)
       .then(response => response.json())
       .then(data => {
         setBlackoutDays(data);
@@ -42,7 +43,7 @@ export default function HorizontalLinearStepper() {
   }, []); // Run only once on component mount
 
   React.useEffect(() => {
-    const maxDateUrl = '/api/getMaxDate'; // API endpoint to fetch max date
+    const maxDateUrl = `${api}/days/getMaxDate`; // API endpoint to fetch max date
     fetch(maxDateUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -96,7 +97,7 @@ export default function HorizontalLinearStepper() {
       };
 
       // Make the API request to create the booking
-      const response = await fetch('/api/bookings', {
+      const response = await fetch(`${api}/bookings/bookings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
