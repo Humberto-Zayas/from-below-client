@@ -16,7 +16,8 @@ const api = process.env.REACT_APP_API_URL;
 export default function HorizontalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-  const [value, setValue] = React.useState(dayjs());
+  const [value, setValue] = React.useState(dayjs().format('YYYY-MM-DD'));
+  console.log('stepper value: ', value)
   const [maxDate, setMaxDate] = React.useState(null);
   const [hours, setHours] = React.useState(null);
   const [formState, setFormState] = React.useState({
