@@ -80,7 +80,7 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
       const transformedHour = `${selectedHourOption.label}/${selectedHourOption.price}`;
       const transformedDay = dayjs(day).format('YYYY-MM-DD');
 
-      fetch(`${api}/bookings/datehour/${id}`, {
+      fetch(`${api}/bookings/bookings/datehour/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
