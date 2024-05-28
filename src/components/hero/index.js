@@ -7,7 +7,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
-import GeneralContact from '../GeneralContact';
 import HorizontalLinearStepper from '../stepper'
 
 const style = {

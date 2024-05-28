@@ -3,12 +3,10 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import GeneralContact from '../GeneralContact';
 import { Link as ScrollLink, animateScroll as scroll } from 'react-scroll';
@@ -23,32 +21,13 @@ function ResponsiveAppBar() {
   const [opacity, setOpacity] = React.useState(0);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   React.useEffect(() => {
@@ -74,7 +53,7 @@ function ResponsiveAppBar() {
   }, []);
 
   return (
-    <AppBar style={{ background: 'transparent', boxShadow: 'none', backgroundColor: `rgba(0,0,0,${opacity})`, boxShadow: 'inset 0 -1px 0 0 rgb(53 53 53 / 80%)' }} position="fixed">
+    <AppBar style={{ background: 'transparent', backgroundColor: `rgba(0,0,0,${opacity})`, boxShadow: 'inset 0 -1px 0 0 rgb(53 53 53 / 80%)' }} position="fixed">
       <Container maxWidth="lg">
         <Toolbar className="shontainer" disableGutters>
           <img style={{ width: '100px' }} src={fbslogo} alt="From Below Studio" />
