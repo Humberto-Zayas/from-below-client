@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import BasicDatePicker from '../BasicDatePicker';
 import ContactForm from '../contactForm';
 import SelectableHours from '../SelectableHours';
+import sendEmail from '../../utils/emailService';
 
 const steps = ['Pick A Date', 'Pick Your Hours', 'Enter Your Information'];
 const api = process.env.REACT_APP_API_URL;
@@ -68,7 +69,7 @@ export default function HorizontalLinearStepper() {
     const selectedHour = value[0].split(" ")[0]; // Assuming value is an array with one element
     setFormState({ ...formState, hours: selectedHour });
     setActiveStep(2);
-  };  
+  };
 
   const handleFormFinished = (formData) => {
     setFormState({ ...formState, ...formData }); // Merge the captured form data into the state
@@ -107,6 +108,19 @@ export default function HorizontalLinearStepper() {
       });
 
       if (response.ok) {
+        await sendEmail(
+          formState.email,
+          'Booking Request Received',
+          `Your booking request is under review. Details: ${JSON.stringify(bookingData)}`
+        );
+
+        // Send email to the admin
+        await sendEmail(
+          process.env.REACT_APP_ADMIN_EMAIL,
+          'New Booking Request',
+          `There is a new booking request. Details: ${JSON.stringify(bookingData)}`
+        );
+
         // Reset the form state and move to the next step
         setFormState({
           name: null,
@@ -142,7 +156,6 @@ export default function HorizontalLinearStepper() {
       alert('Please fill out all fields before submitting the form.');
     }
   };
-
 
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
