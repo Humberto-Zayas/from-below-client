@@ -8,6 +8,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import HorizontalLinearStepper from '../stepper'
+import GeneralContact from '../GeneralContact';
 
 const style = {
   position: 'absolute',
@@ -54,7 +55,7 @@ function Hero() {
           timeout: 500,
         }}
       >
-         
+{/*          
         <Fade in={open}>
           <Box className='div-block-42' sx={style}>
             <div style={{display: 'flex', justifyContent: 'end'}}>
@@ -62,9 +63,10 @@ function Hero() {
             </div>
             <HorizontalLinearStepper></HorizontalLinearStepper>
           </Box>
-        </Fade>
-        {/* <GeneralContact /> */}
+        </Fade> */}
+        <GeneralContact onClose={handleClose} />
       </Modal>
+
     </div>
   )
 
