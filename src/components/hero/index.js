@@ -55,7 +55,7 @@ function Hero() {
           timeout: 500,
         }}
       >
-{/*          
+         
         <Fade in={open}>
           <Box className='div-block-42' sx={style}>
             <div style={{display: 'flex', justifyContent: 'end'}}>
@@ -63,8 +63,8 @@ function Hero() {
             </div>
             <HorizontalLinearStepper></HorizontalLinearStepper>
           </Box>
-        </Fade> */}
-        <GeneralContact onClose={handleClose} />
+        </Fade>
+        {/* <GeneralContact onClose={handleClose} /> */}
       </Modal>
 
     </div>

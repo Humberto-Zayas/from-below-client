@@ -84,9 +84,6 @@ export default function HorizontalLinearStepper() {
 
   const handleBookSession = async () => {
     try {
-      // Perform the booking submission using the formState
-      console.log("Booking submitted:", formState);
-
       // Prepare the booking data
       const bookingData = {
         name: formState.name,
@@ -107,20 +104,26 @@ export default function HorizontalLinearStepper() {
         body: JSON.stringify(bookingData),
       });
 
+      const responseData = await response.json(); // Parse JSON response
       if (response.ok) {
+        console.log('Booking Response:', responseData);
+
         await sendEmail(
           formState.email,
           'Booking Request Received',
-          `Your booking request is under review. Details: ${JSON.stringify(bookingData)}`
+          'Your booking request is under review. Details are as follows:',
+          bookingData
         );
-
-        // Send email to the admin
+        
+        // Send notification email to the admin
         await sendEmail(
           process.env.REACT_APP_ADMIN_EMAIL,
           'New Booking Request',
-          `There is a new booking request. Details: ${JSON.stringify(bookingData)}`
+          'There is a new booking request. Details are as follows:',
+          bookingData,
+          true // Pass isAdmin as true
         );
-
+        
         // Reset the form state and move to the next step
         setFormState({
           name: null,
@@ -134,7 +137,7 @@ export default function HorizontalLinearStepper() {
         setActiveStep(prevActiveStep => prevActiveStep + 1);
         console.log('Booking successfully created.');
       } else {
-        console.error('Error creating booking:', response.statusText);
+        console.error('Error creating booking:', responseData.message || response.statusText);
         alert('An error occurred while submitting the booking.');
       }
     } catch (error) {
@@ -142,6 +145,7 @@ export default function HorizontalLinearStepper() {
       alert('An error occurred while submitting the booking.');
     }
   };
+
 
   const handleNext = () => {
     let newSkipped = skipped;
