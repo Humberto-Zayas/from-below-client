@@ -5,6 +5,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import dayjs from 'dayjs';
+import {sendStatusEmail} from '../../utils/emailService';
 
 const api = process.env.REACT_APP_API_URL;
 
@@ -37,7 +38,7 @@ const AdminBookings = () => {
       });
   }, []);
 
-  const handleUpdateStatus = async (bookingId, newStatus) => {
+  const handleUpdateStatus = async (bookingId, bookingEmail, newStatus) => {
     try {
       const response = await fetch(`${api}/bookings/bookings/${bookingId}`, {
         method: 'PUT',
@@ -48,11 +49,23 @@ const AdminBookings = () => {
           status: newStatus,
         }),
       });
+  
       if (response.ok) {
         const updatedBookings = bookings.map((booking) =>
           booking._id === bookingId ? { ...booking, status: newStatus } : booking
         );
         setBookings(updatedBookings);
+  
+        // Generate deposit link for confirmed bookings
+        const depositLink =
+          newStatus === 'confirmed'
+            ? `${process.env.REACT_APP_FRONTEND_URL}/pay-deposit/${bookingId}`
+            : null;
+  
+        // Send status email with the deposit link
+        await sendStatusEmail(bookingEmail, newStatus, bookingId, depositLink);
+  
+        alert(`Booking status updated and email sent to client.`);
       } else {
         console.error('Error updating booking status:', response.statusText);
         alert('An error occurred while updating the booking status.');
@@ -62,6 +75,7 @@ const AdminBookings = () => {
       alert('An error occurred while updating the booking status.');
     }
   };
+  
 
   const handleDeleteBooking = async (bookingId) => {
     try {

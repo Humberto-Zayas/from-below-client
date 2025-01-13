@@ -1,4 +1,4 @@
-const sendEmail = async (to, subject, text, bookingDetails, isAdmin = false) => {
+export const sendEmail = async (to, subject, text, bookingDetails, isAdmin = false) => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   // Format the email details
@@ -34,4 +34,23 @@ const sendEmail = async (to, subject, text, bookingDetails, isAdmin = false) => 
   return response.json();
 };
 
-export default sendEmail;
+export const sendStatusEmail = async (to, status, bookingId, depositLink = null) => {
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  // Send the status update request to your backend
+  const response = await fetch(`${apiUrl}/send-status-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ to, status, bookingId, depositLink }), // Include depositLink
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to send status email');
+  }
+
+  return response.json();
+};
+
+

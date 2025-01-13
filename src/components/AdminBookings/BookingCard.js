@@ -145,14 +145,14 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
                     },
                   }}
                   variant="outlined"
-                  onClick={() => handleUpdateStatus(booking._id, 'confirmed')}
+                  onClick={() => handleUpdateStatus(booking._id, booking.email, 'confirmed')}
                 >
                   Confirm
                 </Button>
                 <Button
                   variant="outlined"
                   sx={{ color: '#d1203d', borderColor: 'rgb(209 32 61 / 74%)', '&:hover': { borderColor: '#d1203d' } }}
-                  onClick={() => handleUpdateStatus(booking._id, 'denied')}
+                  onClick={() => handleUpdateStatus(booking._id, booking.email, 'denied')}
                 >
                   Deny
                 </Button>

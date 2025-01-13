@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import BasicDatePicker from '../BasicDatePicker';
 import ContactForm from '../contactForm';
 import SelectableHours from '../SelectableHours';
-import sendEmail from '../../utils/emailService';
+import {sendEmail} from '../../utils/emailService';
 
 const steps = ['Pick A Date', 'Pick Your Hours', 'Enter Your Information'];
 const api = process.env.REACT_APP_API_URL;
