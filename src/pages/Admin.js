@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -20,8 +21,11 @@ const adminPass = process.env.REACT_APP_ADMIN_PASSWORD;
 
 
 const Admin = () => {
-  const [selectedComponent, setSelectedComponent] = useState("dateHours");
+  // const [selectedComponent, setSelectedComponent] = useState("dateHours");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryComponent = searchParams.get("component") || "dateHours";
+
 
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn");
@@ -46,8 +50,9 @@ const Admin = () => {
   };
 
   const toggleComponent = (component) => {
-    setSelectedComponent(component);
+    setSearchParams({ component });
   };
+
 
   return (
     <>
@@ -128,24 +133,25 @@ const Admin = () => {
           >
             <ListItem
               style={{ cursor: "pointer" }}
-              onClick={() => toggleComponent("dateHours")}
+              onClick={() => toggleComponent("dateHours")} // Updates the query to "dateHours"
             >
               <CalendarToday style={{ color: "white" }} />
             </ListItem>
             <ListItem
               style={{ cursor: "pointer" }}
-              onClick={() => toggleComponent("bookings")}
+              onClick={() => toggleComponent("bookings")} // Updates the query to "bookings"
             >
               <ListAlt style={{ color: "white" }} />
             </ListItem>
+
           </List>
           <Divider />
         </Box>
         <Container maxWidth="md" style={{ paddingTop: "7em" }}>
           {isLoggedIn ? (
             <>
-              {selectedComponent === "dateHours" && <AdminDateHours />}
-              {selectedComponent === "bookings" && <AdminBookings />}
+              {queryComponent === "dateHours" && <AdminDateHours />}
+              {queryComponent === "bookings" && <AdminBookings />}
             </>
           ) : (
             <Login onLogin={handleLogin} />
