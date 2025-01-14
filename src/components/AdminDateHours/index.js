@@ -4,6 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import { Grid, List, ListItem, ListItemText, Switch, TextField } from '@mui/material';
 import './AdminDateHours.css';
 
@@ -22,6 +23,8 @@ export default function AdminDateHours() {
   const [maxDate, setMaxDate] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [dayData, setDayData] = useState(null);
+  const [multiSelect, setMultiSelect] = useState(false); // Toggle for multi-select mode
+  const [selectedDates, setSelectedDates] = useState([]); // Array of selected dates
 
   useEffect(() => {
     console.log('value on useEffect: ', value)
@@ -64,43 +67,62 @@ export default function AdminDateHours() {
   }, [dayData]);
 
   const handleDatePick = (selectedDate) => {
-    const formattedDate = selectedDate.toISOString().split('T')[0]
-    setValue(formattedDate);
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+    if (multiSelect) {
+      // Add or remove the selected date
+      setSelectedDates((prev) =>
+        prev.includes(formattedDate)
+          ? prev.filter((date) => date !== formattedDate) // Remove if already selected
+          : [...prev, formattedDate] // Add if not selected
+      );
+    } else {
+      setValue(formattedDate); // Regular single date selection
+    }
   };
 
   const handleOptionToggle = (option) => {
     if (!dayData) return;
-
+  
+    // Update the selected options locally
     const updatedOptions = selectedOptions.map((opt) =>
       opt.label === option.label ? { ...opt, enabled: !opt.enabled } : opt
     );
-
     setSelectedOptions(updatedOptions);
-
-    const apiUrl = `${api}/days/updateOrCreateDay`; 
-    fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        date: value,
-        selectedHours: updatedOptions
-          .filter((opt) => opt.enabled)
-          .map((opt) => ({
-            hour: `${opt.label}/${opt.price}`,
-            enabled: true,
-          })),
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Day created or updated:", data);
+  
+    // If multi-select is enabled, update hour blocks for all selected dates
+    const selectedDatesToUpdate = multiSelect ? selectedDates : [value]; // Use selectedDates if multi-select is true
+  
+    // Create an array of API calls for each date
+    const updatePromises = selectedDatesToUpdate.map((date) => {
+      const apiUrl = `${api}/days/updateOrCreateDay`;
+  
+      return fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: date,
+          selectedHours: updatedOptions
+            .filter((opt) => opt.enabled)
+            .map((opt) => ({
+              hour: `${opt.label}/${opt.price}`,
+              enabled: true,
+            })),
+        }),
+      });
+    });
+  
+    // Wait for all API calls to finish
+    Promise.all(updatePromises)
+      .then((responses) => Promise.all(responses.map((res) => res.json())))
+      .then((dataArray) => {
+        console.log("Days created or updated:", dataArray);
       })
       .catch((error) => {
         console.error("Error creating or updating day:", error);
       });
-  };
+  };  
 
   const handleMaxDateChange = (newMaxDate) => {
     setMaxDate(newMaxDate);
@@ -125,29 +147,38 @@ export default function AdminDateHours() {
   };
 
   const handleDisabledToggle = () => {
-    if (!dayData) return;
+    if (!dayData || selectedDates.length === 0) return;
 
-    const apiUrl = `${api}/days/editDay`;
     const newDisabled = !dayData.disabled;
 
-    fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        date: value,
-        disabled: newDisabled,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const updatedSelectedOptions = selectedOptions.map(opt => ({
+    // Loop through all selected dates and make an API call for each
+    const disablePromises = selectedDates.map((date) => {
+      const apiUrl = `${api}/days/editDay`;
+
+      return fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: date,  // Use the individual date from selectedDates
+          disabled: newDisabled,
+        }),
+      });
+    });
+
+    // Wait for all API calls to complete
+    Promise.all(disablePromises)
+      .then((responses) => Promise.all(responses.map((res) => res.json())))
+      .then((dataArray) => {
+        // Update selected options to disable hours if any of the days are disabled
+        const updatedSelectedOptions = selectedOptions.map((opt) => ({
           ...opt,
           enabled: !newDisabled && opt.enabled, // Toggle off hours if day is disabled
         }));
+
         setSelectedOptions(updatedSelectedOptions);
-        setDayData(data);
+        setDayData(dataArray[0]); // Assuming all days will return similar data
       })
       .catch((error) => {
         console.error("Error updating disabled:", error);
@@ -158,23 +189,62 @@ export default function AdminDateHours() {
     <Grid container spacing={2}>
       <Grid item sm={7} xs={12}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <List style={{maxWidth: '310px', margin: '0 auto'}} component="nav">
+          <List style={{ maxWidth: '310px', margin: '0 auto' }} component="nav">
             <ListItem>
               <ListItemText style={{ color: 'white' }} primary="Max Date" />
               <DatePicker
                 disablePast={true}
                 value={maxDate}
-                renderInput={(params) => <TextField style={{border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', width: '148px'}} {...params} />}
+                renderInput={(params) => <TextField style={{ border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', width: '148px' }} {...params} />}
                 onChange={handleMaxDateChange}
               />
             </ListItem>
+            <ListItem>
+              <ListItemText style={{ color: 'white' }} primary="Multi-Select" />
+              <Switch
+                checked={multiSelect}
+                onChange={() => {
+                  setMultiSelect((prev) => {
+                    if (!prev) {
+                      // Adding current selected date when enabling multi-select
+                      setSelectedDates((prevDates) =>
+                        prevDates.includes(value) ? prevDates : [...prevDates, value]
+                      );
+                    } else {
+                      // Clearing selected dates when disabling multi-select
+                      setSelectedDates([]);
+                    }
+                    return !prev;
+                  });
+                }}
+              />
+            </ListItem>
           </List>
+          {/* <StaticDatePicker
+            maxDate={maxDate}
+            disablePast={true}
+            value={value}
+            onChange={handleDatePick}
+            showToolbar={false}
+          /> */}
           <StaticDatePicker
             maxDate={maxDate}
             disablePast={true}
             value={value}
             onChange={handleDatePick}
             showToolbar={false}
+            renderDay={(day, _selectedDates, pickersDayProps) => {
+              const formattedDay = day.format('YYYY-MM-DD');
+              const isSelected = selectedDates.includes(formattedDay);
+
+              return (
+                <PickersDay
+                  {...pickersDayProps}
+                  className={`${pickersDayProps.className} ${isSelected ? 'Mui-selected' : ''}`}
+                />
+              );
+            }}
+
           />
         </LocalizationProvider>
       </Grid>
@@ -207,6 +277,20 @@ export default function AdminDateHours() {
               />
             </ListItem>
           ))}
+          <ListItem>
+            <ListItemText
+              style={{ color: 'white' }}
+              primary="Selected Dates"
+              secondary={
+                multiSelect
+                  ? selectedDates.length > 0
+                    ? selectedDates.join(', ')
+                    : 'No dates selected'
+                  : value
+              }
+            />
+          </ListItem>
+
         </List>
       </Grid>
     </Grid>
