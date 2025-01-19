@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -64,7 +64,9 @@ const Admin = () => {
             justifyContent: "space-between",
           }}
         >
-          <img style={{ width: "80px" }} src={fbslogo} alt="Logo" />
+          <Link to="/" target="_blank" style={{ textDecoration: 'none' }}>
+            <img style={{ width: "80px" }} src={fbslogo} alt="Logo" />
+          </Link>
           <Typography
             variant="h5"
             component="h1"
