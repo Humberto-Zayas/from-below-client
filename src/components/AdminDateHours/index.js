@@ -147,43 +147,45 @@ export default function AdminDateHours() {
   };
 
   const handleDisabledToggle = () => {
-    if (!dayData || selectedDates.length === 0) return;
-
+    if (!dayData) return;
+  
     const newDisabled = !dayData.disabled;
-
-    // Loop through all selected dates and make an API call for each
-    const disablePromises = selectedDates.map((date) => {
+  
+    // Determine which dates to update
+    const datesToUpdate = multiSelect ? selectedDates : [value]; 
+  
+    if (datesToUpdate.length === 0) return; // Avoid making unnecessary API calls
+  
+    // Make API calls for each selected date
+    const disablePromises = datesToUpdate.map((date) => {
       const apiUrl = `${api}/days/editDay`;
-
+  
       return fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          date: date,  // Use the individual date from selectedDates
+          date: date,  
           disabled: newDisabled,
         }),
       });
     });
-
+  
     // Wait for all API calls to complete
     Promise.all(disablePromises)
       .then((responses) => Promise.all(responses.map((res) => res.json())))
       .then((dataArray) => {
-        // Update selected options to disable hours if any of the days are disabled
-        const updatedSelectedOptions = selectedOptions.map((opt) => ({
-          ...opt,
-          enabled: !newDisabled && opt.enabled, // Toggle off hours if day is disabled
-        }));
-
-        setSelectedOptions(updatedSelectedOptions);
-        setDayData(dataArray[0]); // Assuming all days will return similar data
+        console.log("Disabled state updated:", dataArray);
+  
+        // Update state based on response
+        setDayData(dataArray[0]); // Assuming all updates return the same format
       })
       .catch((error) => {
-        console.error("Error updating disabled:", error);
+        console.error("Error updating disabled state:", error);
       });
   };
+  
 
   return (
     <Grid container spacing={2}>
