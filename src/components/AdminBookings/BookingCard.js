@@ -5,6 +5,8 @@ import { Email, Phone, Message, Hearing, AccessTime, Edit, DeleteOutlined as Del
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { styled } from '@mui/system';
+import '../../pages/Admin.css';
+
 import EditBooking from './EditBooking';
 import DeleteBookingModal from './DeleteBookingModal';
 

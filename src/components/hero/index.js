@@ -38,7 +38,7 @@ function Hero() {
       <h1 className='hero-h1 heading oswald'><span className='text-span'>FROM BELOW</span> <span className='text-span-2'>STUDIO</span></h1>
      
       <h2 className='heading-2 sub-cta'>New Jersey Recording Studio</h2>
-      <p><a href="tel:+1-609-469-4340" className='link-3'>(609)-469-4340</a></p>
+      {/* <p><a href="tel:+1-609-469-4340" className='link-3'>(609)-469-4340</a></p> */}
       <Stack spacing={2} direction="row">
         <span className='fbs-button' onClick={handleOpen} variant="contained"><CalendarMonthIcon style={{position: 'relative', top: '6px', left: '-9px'}} />BOOK YOUR SESSION</span>
       </Stack>

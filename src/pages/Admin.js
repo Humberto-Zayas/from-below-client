@@ -135,17 +135,16 @@ const Admin = () => {
           >
             <ListItem
               style={{ cursor: "pointer" }}
-              onClick={() => toggleComponent("dateHours")} // Updates the query to "dateHours"
+              onClick={() => toggleComponent("dateHours")}
             >
-              <CalendarToday style={{ color: "white" }} />
+              <CalendarToday style={{ color: queryComponent === "dateHours" ? "#00ffa2" : "white" }} />
             </ListItem>
             <ListItem
               style={{ cursor: "pointer" }}
-              onClick={() => toggleComponent("bookings")} // Updates the query to "bookings"
+              onClick={() => toggleComponent("bookings")}
             >
-              <ListAlt style={{ color: "white" }} />
+              <ListAlt style={{ color: queryComponent === "bookings" ? "#00ffa2" : "white" }} />
             </ListItem>
-
           </List>
           <Divider />
         </Box>
