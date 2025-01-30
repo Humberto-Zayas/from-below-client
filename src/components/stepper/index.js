@@ -106,20 +106,20 @@ export default function HorizontalLinearStepper() {
 
       const responseData = await response.json(); // Parse JSON response
       if (response.ok) {
-        console.log('Booking Response:', responseData);
+        // console.log('Booking Response:', responseData);
 
         await sendEmail(
           formState.email,
-          'Booking Request Received',
-          'Your booking request is under review. Details are as follows:',
-          bookingData
+          'Studio Booking Request Received',
+          'From Below Studio has received your booking request. Please give us time to confirm availability for your session and that there are no scheduling conflicts on our end. If you have any questions or concerns please reach out to frombelowstudio@gmail.com. Your booking details are as follows:',
+          bookingData,
         );
         
         // Send notification email to the admin
         await sendEmail(
           process.env.REACT_APP_ADMIN_EMAIL,
-          'New Booking Request',
-          'There is a new booking request. Details are as follows:',
+          'New Studio Booking Request',
+          `${bookingData.name} has submitted a booking request. Details are as follows:`,
           bookingData,
           true // Pass isAdmin as true
         );

@@ -4,6 +4,7 @@ import './css/frombelow.css';
 
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
+import BookingStatus from "./pages/BookingStatus"; // Import the new page
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/booking/:bookingId" element={<BookingStatus />} /> 
         </Routes>
       </Router>
     </div>

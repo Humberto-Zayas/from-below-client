@@ -4,7 +4,7 @@ export const sendEmail = async (to, subject, text, bookingDetails, isAdmin = fal
   // Format the email details
   const formattedDetails = bookingDetails
     ? `
-      ${isAdmin ? 'There is a new booking request.' : text}
+      ${isAdmin ? `${bookingDetails.name} has sent a new booking request.` : text}
 
       Booking Details:
       ----------------
