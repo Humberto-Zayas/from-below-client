@@ -11,7 +11,6 @@ import Admin from './Admin'; // Import the Admin component
 const Home = () => {
   const location = useLocation();
   const [adminRender, setAdminRender] = useState(false);
-  const [countries, setCountries] = useState([]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -23,21 +22,6 @@ const Home = () => {
       setAdminRender(false); // Set the state to render the default components
     }
   }, [location.search]);
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await fetch('https://expressjs-mongoose-production-6969.up.railway.app/countries');
-        const data = await response.json();
-        setCountries(data);
-        console.log('Fetched countries:', data);
-      } catch (error) {
-        console.error('Error fetching countries:', error);
-      }
-    };
-
-    fetchCountries();
-  }, []); // Empty dependency array ensures that the effect runs only once when the component mounts
 
   return (
     <>

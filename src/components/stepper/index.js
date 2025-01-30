@@ -192,7 +192,7 @@ export default function HorizontalLinearStepper() {
         <React.Fragment>
           {activeStep === 0 && (
             <Box sx={{ mt: 1 }}>
-              <BasicDatePicker value={value} maxDate={maxDate} days={blackoutDays} handleClick={handleDatePick} />
+              <BasicDatePicker value={''} maxDate={maxDate} days={blackoutDays} handleClick={handleDatePick} />
             </Box>
           )}
           {activeStep === 1 && (
