@@ -15,7 +15,7 @@ export default function ContactForm(props) {
     referral: '',
     howDidYouHear: '',
   });
-  
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -31,7 +31,7 @@ export default function ContactForm(props) {
       hours: props.hours
     });
   };
-  
+
   return (
     <>
       <form>
@@ -51,7 +51,7 @@ export default function ContactForm(props) {
             onChange={(event) => handleChange(event)}
             required
           />
-          
+
           <TextField
             name="email"
             sx={{
@@ -105,13 +105,12 @@ export default function ContactForm(props) {
           <FormControl sx={{ mb: 5 }}>
             <InputLabel id="demo-simple-select-label">How did you hear about us?</InputLabel>
             <Select
-            sx={{
-             
-              color: 'white',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'rgba(255, 255, 255, 0.23)',
-              },
-            }}
+              sx={{
+                color: 'white',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(255, 255, 255, 0.23)',
+                },
+              }}
               defaultValue=""
               name="howDidYouHear"
               labelId="demo-simple-select-label"
@@ -143,7 +142,7 @@ export default function ContactForm(props) {
             }}
             value={props.date}
           />
-          
+
           <TextField
             sx={{
               mb: 3,
@@ -160,7 +159,7 @@ export default function ContactForm(props) {
             }}
             value={props.hours}
           />
-          
+
         </FormControl>
         {/* <Box sx={{ mt: 3 }}>
         <Button variant="contained">Send</Button>

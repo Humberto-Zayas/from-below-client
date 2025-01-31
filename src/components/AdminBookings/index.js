@@ -76,7 +76,6 @@ const AdminBookings = () => {
     }
   };
   
-
   const handleDeleteBooking = async (bookingId) => {
     try {
       const response = await fetch(`${api}/bookings/bookings/${bookingId}`, {
