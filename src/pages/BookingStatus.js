@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/navbar';
 import Footer from '../components/Footer';
-import { MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { MenuItem, Select, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Email, Phone, Receipt, Person, Event, Hearing, AccessTime, Edit, Schedule, AttachMoney, Payment,  DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
+
+
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 import './BookingStatus.css';
@@ -135,15 +138,52 @@ const BookingStatus = () => {
             status={booking.status}
           />
           <h2>Booking Details</h2>
-          <p><strong>Booking Invoice:</strong> {booking._id}</p>
-          <p><strong>Name:</strong> {booking.name}</p>
-          <p><strong>Email:</strong> {booking.email}</p>
-          <p><strong>Status:</strong> {booking.status}</p>
-          <p><strong>Booking Hours/Total:</strong> {booking.hours}</p>
-          <p><strong>Deposit Due:</strong> </p>
-          <p><strong>Date:</strong> {booking.date}</p>
-          <p><strong>50% Deposit:</strong> ${getDepositAmount(booking.hours)}</p>
-          <p><strong>Payment Status:</strong> {booking.paymentStatus}</p>
+          <List>
+            <ListItem>
+              <ListItemIcon><Receipt /></ListItemIcon>
+              <ListItemText primary="Booking Invoice" secondary={booking._id} />
+            </ListItem>
+
+            <ListItem>
+              <ListItemIcon><Person /></ListItemIcon>
+              <ListItemText primary="Name" secondary={booking.name} />
+            </ListItem>
+
+            <ListItem>
+              <ListItemIcon>
+                <Email style={{ color: 'white' }} />
+              </ListItemIcon>
+              <ListItemText primary="Email" secondary={booking.email} />
+            </ListItem>
+
+            <ListItem>
+              <ListItemIcon>
+                <Phone style={{ color: 'white' }} />
+              </ListItemIcon>
+              <ListItemText primary="Phone Number" secondary={booking.phoneNumber} />
+            </ListItem>
+
+            <ListItem>
+              <ListItemIcon><Event /></ListItemIcon>
+              <ListItemText primary="Date" secondary={booking.date} />
+            </ListItem>
+
+            <ListItem>
+              <ListItemIcon><Schedule /></ListItemIcon>
+              <ListItemText primary="Booking Hours/Total" secondary={booking.hours} />
+            </ListItem>
+
+            <ListItem>
+              <ListItemIcon><AttachMoney /></ListItemIcon>
+              <ListItemText primary="50% Deposit" secondary={`$${getDepositAmount(booking.hours)}`} />
+            </ListItem>
+
+            <ListItem>
+              <ListItemIcon><Payment /></ListItemIcon>
+              <ListItemText primary="Payment Status" secondary={booking.paymentStatus} />
+            </ListItem>
+          </List>
+
           <FormControl fullWidth>
             <InputLabel id="payment-method">Payment Method</InputLabel>
             <Select
