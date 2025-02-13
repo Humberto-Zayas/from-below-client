@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/navbar';
 import Footer from '../components/Footer';
-import { MenuItem, Select, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import { Email, Phone, Receipt, Person, Event, Hearing, AccessTime, Edit, Schedule, AttachMoney, Payment,  DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
-
+import dayjs from 'dayjs';
+import { MenuItem, Select, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemText, Card, CardHeader } from '@mui/material';
+import { Email, Phone, Receipt, Person, Event, Hearing, AccessTime, Edit, Schedule, AttachMoney, Payment, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
 
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
@@ -32,6 +32,7 @@ const BookingStatus = () => {
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState(booking?.paymentMethod || 'none');
+  const [formattedDate, setFormattedDate] = useState(dayjs(booking?.date).format('M/DD/YY'));
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -132,21 +133,24 @@ const BookingStatus = () => {
     <>
       <Header />
       <div className='section about'>
-        <div style={{ margin: '0 auto', maxWidth: 390, width: '90%', backgroundColor: '#202020' }}>
-          <Dot
-            className={booking.status === 'confirmed' ? 'confirmed-dot' : ''}
-            status={booking.status}
+        <Card sx={{ backgroundColor: '#202020', color: '#e7e7e7', maxWidth: 390, margin: '0 auto' }}>
+          <CardHeader
+            titleTypographyProps={{ variant: 'subtitle1' }}
+            title={
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                <Dot className={booking.status === 'confirmed' ? 'confirmed-dot' : ''} status={booking.status} />
+                {`${booking.name}`}&nbsp;
+                <span style={{ color: 'rgba(255,255,255,0.6)' }}>
+                  &nbsp;{formattedDate}
+                </span>
+               
+              </span>
+            }
           />
-          <h2>Booking Details</h2>
           <List>
             <ListItem>
-              <ListItemIcon><Receipt /></ListItemIcon>
+              <ListItemIcon><Receipt style={{ color: 'white' }} /></ListItemIcon>
               <ListItemText primary="Booking Invoice" secondary={booking._id} />
-            </ListItem>
-
-            <ListItem>
-              <ListItemIcon><Person /></ListItemIcon>
-              <ListItemText primary="Name" secondary={booking.name} />
             </ListItem>
 
             <ListItem>
@@ -164,27 +168,22 @@ const BookingStatus = () => {
             </ListItem>
 
             <ListItem>
-              <ListItemIcon><Event /></ListItemIcon>
-              <ListItemText primary="Date" secondary={booking.date} />
-            </ListItem>
-
-            <ListItem>
-              <ListItemIcon><Schedule /></ListItemIcon>
+              <ListItemIcon><Schedule style={{ color: 'white' }} /></ListItemIcon>
               <ListItemText primary="Booking Hours/Total" secondary={booking.hours} />
             </ListItem>
 
             <ListItem>
-              <ListItemIcon><AttachMoney /></ListItemIcon>
+              <ListItemIcon><AttachMoney style={{ color: 'white' }} /></ListItemIcon>
               <ListItemText primary="50% Deposit" secondary={`$${getDepositAmount(booking.hours)}`} />
             </ListItem>
 
             <ListItem>
-              <ListItemIcon><Payment /></ListItemIcon>
-              <ListItemText primary="Payment Status" secondary={booking.paymentStatus} />
+              <ListItemIcon><Payment style={{ color: 'white' }} /></ListItemIcon>
+              <ListItemText primary="Deposit Status" secondary={booking.paymentStatus} />
             </ListItem>
           </List>
 
-          <FormControl fullWidth>
+          <FormControl style={{paddingLeft: 20, paddingRight: 20}} fullWidth>
             <InputLabel id="payment-method">Payment Method</InputLabel>
             <Select
               label="payment-method"
@@ -206,11 +205,12 @@ const BookingStatus = () => {
               <MenuItem value="cash">Cash</MenuItem>
             </Select>
           </FormControl>
-          <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
+          <div style={{ padding: '20px', }}>
             {getPaymentInstructions()}
           </div>
-        </div>
+        </Card>
       </div>
+      {/* last div */}
       <Footer />
     </>
   );
