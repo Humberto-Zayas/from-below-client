@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Card, CardContent, CardHeader, Collapse, Button, List, ListItem, ListItemText, ListItemIcon, Drawer } from '@mui/material';
+import { Card, CardContent, CardHeader, Collapse, Button, List, ListItem, ListItemText, ListItemIcon, Drawer, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import { Email, Phone, Message, Hearing, AccessTime, Edit, Launch, Receipt, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -37,6 +37,7 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
   const [hours, setHours] = useState(booking.hours);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState(booking.paymentStatus || 'unpaid');
   const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
@@ -48,6 +49,10 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
   const handleBookingUpdateAndFormat = (updatedHours, updatedFormattedDate) => {
     setHours(updatedHours);
     setFormattedDate(updatedFormattedDate);
+  };
+  const handlePaymentStatusChange = (event) => {
+    setPaymentStatus(event.target.value);
+    // Call API or update booking data if needed
   };
   const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
@@ -153,6 +158,29 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
                 </Button>
               </ListItemIcon>
             </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <Receipt style={{ color: 'white' }} />
+              </ListItemIcon>
+              <ListItemText primary="Payment Status" />
+              <FormControl sx={{ minWidth: 120 }}>
+                <Select
+                  value={paymentStatus}
+                  onChange={handlePaymentStatusChange}
+                  sx={{
+                    color: 'white',
+                    '.MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#00ffa2' },
+                    '.MuiSvgIcon-root': { color: 'white' },
+                  }}
+                >
+                  <MenuItem value="unpaid">Unpaid</MenuItem>
+                  <MenuItem value="deposit_paid">Deposit Paid</MenuItem>
+                  <MenuItem value="paid">Paid</MenuItem>
+                </Select>
+              </FormControl>
+            </ListItem>
+
             <ListItem sx={{ flexWrap: 'wrap' }}>
               <ListItemIcon>
                 <Dot
