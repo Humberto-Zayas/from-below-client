@@ -22,7 +22,6 @@ const AdminBookings = () => {
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
-        console.log('use effect bookings fetch: ', data)
         const currentDate = dayjs().startOf('day');
         const upcomingBookings = data.filter((booking) =>
           dayjs(booking.date, 'YYYY-MM-DD').isSame(currentDate) || dayjs(booking.date, 'YYYY-MM-DD').isAfter(currentDate)

@@ -7,9 +7,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { styled } from '@mui/system';
 import '../../pages/Admin.css';
-
 import EditBooking from './EditBooking';
 import DeleteBookingModal from './DeleteBookingModal';
+
+const api = process.env.REACT_APP_API_URL;
 
 const Dot = styled('span')(({ theme, status }) => ({
   width: 12,
@@ -50,10 +51,30 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
     setHours(updatedHours);
     setFormattedDate(updatedFormattedDate);
   };
-  const handlePaymentStatusChange = (event) => {
-    setPaymentStatus(event.target.value);
-    // Call API or update booking data if needed
+  const handlePaymentStatusChange = async (event) => {
+    const newStatus = event.target.value;
+    setPaymentStatus(newStatus);
+  
+    try {
+      const response = await fetch(`${api}/bookings/bookings/${booking._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ paymentStatus: newStatus }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update payment status');
+      }
+  
+      const updatedBooking = await response.json();
+      console.log('Payment status updated:', updatedBooking);
+    } catch (error) {
+      console.error('Error updating payment status:', error);
+    }
   };
+  
   const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
   };
