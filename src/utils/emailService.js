@@ -1,10 +1,18 @@
 export const sendEmail = async (to, subject, text, bookingDetails, isAdmin = false) => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
+  // Determine the base URL based on the environment
+  const baseUrl =
+    process.env.NODE_ENV === 'production'
+      ? 'https://frombelowstudio.com'
+      : 'http://localhost:3000';
+
+  const adminLink = `${baseUrl}/admin?component=bookings`;
+
   // Format the email details
   const formattedDetails = bookingDetails
     ? `
-      ${isAdmin ? `${bookingDetails.name} has sent a new booking request.` : text}
+      ${isAdmin ? `${bookingDetails.name} has sent a new booking request. Update the booking status here: ${adminLink}.` : text}
 
       Booking Details:
       ----------------
