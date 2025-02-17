@@ -8,6 +8,8 @@ import { styled } from '@mui/system';
 import '../../pages/Admin.css';
 import EditBooking from './EditBooking';
 import DeleteBookingModal from './DeleteBookingModal';
+import { sendPaymentStatusEmail } from '../../utils/emailService';
+
 
 const api = process.env.REACT_APP_API_URL;
 
@@ -68,6 +70,8 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
   
       const updatedBooking = await response.json();
       console.log('Payment status updated:', updatedBooking);
+      await sendPaymentStatusEmail(booking.email, booking.name, booking._id, newStatus);
+
     } catch (error) {
       console.error('Error updating payment status:', error);
     }

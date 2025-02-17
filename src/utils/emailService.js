@@ -80,4 +80,23 @@ export const sendBookingChangeEmail = async (to, name, id, newDate, newHours) =>
   return response.json();
 };
 
+export const sendPaymentStatusEmail = async (to, name, id, paymentStatus) => {
+
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  const response = await fetch(`${apiUrl}/send-payment-status-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ to, name, id, paymentStatus }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to send payment status email');
+  }
+
+  return response.json();
+};
+
 
