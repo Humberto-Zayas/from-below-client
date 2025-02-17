@@ -61,7 +61,7 @@ export const sendStatusEmail = async (to, status, bookingId, depositLink = null)
   return response.json();
 };
 
-export const sendBookingChangeEmail = async (to, name, newDate, newHours) => {
+export const sendBookingChangeEmail = async (to, name, id, newDate, newHours) => {
   console.log('frontend sendbookingchangeeamil ran')
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -70,7 +70,7 @@ export const sendBookingChangeEmail = async (to, name, newDate, newHours) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ to, name, newDate, newHours }),
+    body: JSON.stringify({ to, name, id, newDate, newHours }),
   });
 
   if (!response.ok) {

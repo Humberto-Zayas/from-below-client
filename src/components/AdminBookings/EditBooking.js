@@ -103,7 +103,8 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
             console.log('handleSave updated condition ran')
             sendBookingChangeEmail(
               updatedBooking.email, 
-              updatedBooking.name, 
+              updatedBooking.name,
+              updatedBooking._id,
               transformedDay, 
               selectedHourOption.label
             ).catch(error => console.error('Error sending email:', error));

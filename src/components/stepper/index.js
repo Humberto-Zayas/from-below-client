@@ -108,12 +108,12 @@ export default function HorizontalLinearStepper() {
       if (response.ok) {
         // console.log('Booking Response:', responseData);
 
-        await sendEmail(
-          formState.email,
-          'Studio Booking Request Received',
-          'From Below Studio has received your booking request. Please give us time to confirm availability for your session and that there are no scheduling conflicts on our end. If you have any questions or concerns please reach out to frombelowstudio@gmail.com. Your booking details are as follows:',
-          bookingData,
-        );
+        // await sendEmail(
+        //   formState.email,
+        //   'Studio Booking Request Received',
+        //   'From Below Studio has received your booking request. Please give us time to confirm availability for your session and that there are no scheduling conflicts on our end. If you have any questions or concerns please reach out to frombelowstudio@gmail.com. Your booking details are as follows:',
+        //   bookingData,
+        // );
         
         // Send notification email to the admin
         await sendEmail(
