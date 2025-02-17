@@ -61,7 +61,7 @@ function Hero() {
             <div style={{display: 'flex', justifyContent: 'end'}}>
               <CloseIcon style={{color: 'white'}} onClick={() => setOpen(false)} />
             </div>
-            <HorizontalLinearStepper></HorizontalLinearStepper>
+            <HorizontalLinearStepper handleClose={handleClose}></HorizontalLinearStepper>
           </Box>
         </Fade>
         {/* <GeneralContact onClose={handleClose} /> */}

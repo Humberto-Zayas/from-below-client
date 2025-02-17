@@ -9,12 +9,12 @@ import dayjs from 'dayjs';
 import BasicDatePicker from '../BasicDatePicker';
 import ContactForm from '../contactForm';
 import SelectableHours from '../SelectableHours';
-import {sendEmail} from '../../utils/emailService';
+import { sendEmail } from '../../utils/emailService';
 
 const steps = ['Pick A Date', 'Pick Your Hours', 'Enter Your Information'];
 const api = process.env.REACT_APP_API_URL;
 
-export default function HorizontalLinearStepper() {
+export default function HorizontalLinearStepper({handleClose}) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [value, setValue] = React.useState(dayjs().format('YYYY-MM-DD'));
@@ -114,7 +114,7 @@ export default function HorizontalLinearStepper() {
         //   'From Below Studio has received your booking request. Please give us time to confirm availability for your session and that there are no scheduling conflicts on our end. If you have any questions or concerns please reach out to frombelowstudio@gmail.com. Your booking details are as follows:',
         //   bookingData,
         // );
-        
+
         // Send notification email to the admin
         await sendEmail(
           process.env.REACT_APP_ADMIN_EMAIL,
@@ -123,7 +123,7 @@ export default function HorizontalLinearStepper() {
           bookingData,
           true // Pass isAdmin as true
         );
-        
+
         // Reset the form state and move to the next step
         setFormState({
           name: null,
@@ -167,6 +167,7 @@ export default function HorizontalLinearStepper() {
 
   const handleReset = () => {
     setActiveStep(0);
+    handleClose();
   };
 
   return (
@@ -181,11 +182,17 @@ export default function HorizontalLinearStepper() {
       {activeStep === steps.length ? (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1, color: 'white' }}>
-            All steps completed - you&apos;re finished
+            From Below Studio has received your booking request. Please give us time to confirm availability for your session and that there are no scheduling conflicts on our end.
+          </Typography>
+          <Typography sx={{ mt: 2, mb: 1, color: 'white' }}>
+            You will receive a confirmation email with your booking details and payment options for a deposit. In order to secure your session a 50% deposit will be required.
+          </Typography>
+          <Typography sx={{ mt: 2, mb: 1, color: 'white' }}>
+             If you have any questions or concerns please reach out to frombelowstudio@gmail.com.
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button>
+            <Button onClick={handleReset}>Close</Button>
           </Box>
         </React.Fragment>
       ) : (
