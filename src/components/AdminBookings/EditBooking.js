@@ -3,6 +3,8 @@ import { Button, Container, Grid, List, ListItem, ListItemButton, ListItemText, 
 import CheckIcon from '@mui/icons-material/Check';
 import BasicDatePicker from '../BasicDatePicker';
 import dayjs from 'dayjs';
+import { sendBookingChangeEmail } from '../../utils/emailService'; // Import the new email function
+
 const api = process.env.REACT_APP_API_URL;
 
 const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
@@ -79,7 +81,7 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
     if (selectedHourOption) {
       const transformedHour = `${selectedHourOption.label}/${selectedHourOption.price}`;
       const transformedDay = dayjs(day).format('YYYY-MM-DD');
-
+  
       fetch(`${api}/bookings/bookings/datehour/${id}`, {
         method: 'PUT',
         headers: {
@@ -95,13 +97,24 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
           console.log('Booking updated:', updatedBooking);
           onBookingUpdate(transformedHour, day);
           closeDrawer();
+  
+          // Ensure email is sent to the client
+          if (updatedBooking.email && updatedBooking.name) {
+            console.log('handleSave updated condition ran')
+            sendBookingChangeEmail(
+              updatedBooking.email, 
+              updatedBooking.name, 
+              transformedDay, 
+              selectedHourOption.label
+            ).catch(error => console.error('Error sending email:', error));
+          }
         })
         .catch(error => {
           console.error('Error updating booking:', error);
         });
     }
   };
-
+  
   return (
     <Container maxWidth="md" sx={{ display: 'flex', height: '100%', flexDirection: 'column' }}>
       <div style={{ position: 'relative', width: '100%' }}>

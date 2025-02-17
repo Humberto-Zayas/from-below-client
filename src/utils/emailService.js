@@ -61,4 +61,23 @@ export const sendStatusEmail = async (to, status, bookingId, depositLink = null)
   return response.json();
 };
 
+export const sendBookingChangeEmail = async (to, name, newDate, newHours) => {
+  console.log('frontend sendbookingchangeeamil ran')
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  const response = await fetch(`${apiUrl}/send-booking-change-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ to, name, newDate, newHours }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to send booking change email');
+  }
+
+  return response.json();
+};
+
 

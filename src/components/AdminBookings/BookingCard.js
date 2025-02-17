@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Card, CardContent, CardHeader, Collapse, Button, List, ListItem, ListItemText, ListItemIcon, Drawer, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { Card, CardContent, CardHeader, Collapse, Button, List, ListItem, ListItemText, ListItemIcon, Drawer, MenuItem, Select, FormControl } from '@mui/material';
 import { Email, Phone, Message, Hearing, AccessTime, Edit, Launch, Receipt, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -39,7 +38,6 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(booking.paymentStatus || 'unpaid');
-  const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
     setIsDrawerOpen(true);
