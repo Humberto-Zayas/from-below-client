@@ -31,9 +31,9 @@ const Dot = styled('span')(({ theme, status }) => ({
 const BookingStatus = () => {
   const { bookingId } = useParams(); // Get booking ID from the URL
   const [booking, setBooking] = useState(null);
-  console.log('fetched booking: ', booking)
+  console.log('fetched booking: ',)
   const [loading, setLoading] = useState(true);
-  const [paymentMethod, setPaymentMethod] = useState(booking?.paymentMethod || 'none');
+  const [paymentMethod, setPaymentMethod] = useState('');
   const [formattedDate, setFormattedDate] = useState(dayjs(booking?.date).format('M/DD/YY'));
   const [error, setError] = useState(null);
 
@@ -46,6 +46,7 @@ const BookingStatus = () => {
         }
         const data = await response.json();
         setBooking(data);
+        setPaymentMethod(data.paymentMethod || 'none');
       } catch (err) {
         setError(err.message);
       } finally {
@@ -225,7 +226,6 @@ const BookingStatus = () => {
             <Select
               label="payment-method"
               id="payment-method"
-              defaultValue=""
               value={paymentMethod}
               onChange={handlePaymentMethodChange}
               sx={{
