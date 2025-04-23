@@ -3,9 +3,10 @@ import Header from '../components/navbar';
 import Footer from '../components/Footer';
 import dayjs from 'dayjs';
 import { MenuItem, Select, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemText, Card, CardHeader } from '@mui/material';
-import { Email, Phone, Receipt, Person, Event, Hearing, AccessTime, Edit, Schedule, AttachMoney, Payment, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
-
-import { styled } from '@mui/system';
+import { Email, Phone, Receipt, Schedule, AttachMoney, Payment, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
+import venmoQr from '../images/venmo-code.jpg';
+import cashappQr from '../images/cashapp-code.jpg';
+import zelleQr from '../images/zelle-code.jpg';import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 import './BookingStatus.css';
 
@@ -30,6 +31,7 @@ const Dot = styled('span')(({ theme, status }) => ({
 const BookingStatus = () => {
   const { bookingId } = useParams(); // Get booking ID from the URL
   const [booking, setBooking] = useState(null);
+  console.log('fetched booking: ', booking)
   const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState(booking?.paymentMethod || 'none');
   const [formattedDate, setFormattedDate] = useState(dayjs(booking?.date).format('M/DD/YY'));
@@ -88,6 +90,7 @@ const BookingStatus = () => {
           </ul>
           <p>Include your <strong>Booking ID/Invoice Number: {booking._id}</strong> in the payment description.</p>
           <p>After payment, email proof of payment to <strong>frombelowstudio@gmail.com</strong>.</p>
+          <img src={`${venmoQr}`} alt='venmo-code' loading="lazy" />
         </div>
       );
     }
@@ -102,6 +105,40 @@ const BookingStatus = () => {
     }
 
     return null;
+  };
+
+  const renderInstructions = () => {
+    switch(paymentMethod) {
+      case 'venmo':
+        return <img src={venmoQr} alt="Venmo QR" loading="lazy" />;
+      case 'cashapp':
+        return <img src={cashappQr} alt="Cash App QR" loading="lazy" />;
+      case 'zelle':
+        return <img src={zelleQr} alt="Zelle QR" loading="lazy" />;
+      case 'applepay':
+        return (
+          <div>
+            <p style={{fontSize: 16}}><strong>To pay with Apple Pay on your own:</strong></p>
+            <ol style={{fontSize: 16}}>
+              <li style={{marginBottom: 16}}>Open Wallet on your iPhone/Mac.</li>
+              <li style={{marginBottom: 16}}>Tap your card &gt; “Send”.</li>
+              <li style={{marginBottom: 16}}>Enter: <strong>frombelowstudio@gmail.com</strong></li>
+              <li style={{marginBottom: 16}}>Enter amount: <strong>${getDepositAmount(booking.hours)}</strong>.</li>
+              <li>Hit “Pay” and include Booking ID <strong>{booking._id}</strong>.</li>
+            </ol>
+          </div>
+        );
+      case 'cash':
+        return (
+          <div>
+            <p><strong>Bring the full amount in cash on session day.</strong></p>
+            <p>Email <strong>frombelowstudio@gmail.com</strong> to confirm.</p>
+          </div>
+        );
+      case 'none':
+      default:
+        return <p style={{ color:'red' }}><strong>Select a payment method.</strong></p>;
+    }
   };
 
   const handlePaymentMethodChange = async (event) => {
@@ -202,11 +239,12 @@ const BookingStatus = () => {
               <MenuItem value="venmo">Venmo</MenuItem>
               <MenuItem value="cashapp">Cash App</MenuItem>
               <MenuItem value="zelle">Zelle</MenuItem>
+              <MenuItem value="applepay">Apple Pay</MenuItem>
               <MenuItem value="cash">Cash</MenuItem>
             </Select>
           </FormControl>
-          <div style={{ padding: '20px', }}>
-            {getPaymentInstructions()}
+          <div style={{ padding:20 }}>
+            {renderInstructions()}
           </div>
         </Card>
       </div>
