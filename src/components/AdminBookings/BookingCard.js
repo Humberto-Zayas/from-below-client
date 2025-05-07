@@ -51,10 +51,12 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
     setHours(updatedHours);
     setFormattedDate(updatedFormattedDate);
   };
+  // Inside BookingCard component
+
   const handlePaymentStatusChange = async (event) => {
     const newStatus = event.target.value;
     setPaymentStatus(newStatus);
-  
+
     try {
       const response = await fetch(`${api}/bookings/bookings/${booking._id}`, {
         method: 'PUT',
@@ -63,20 +65,26 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
         },
         body: JSON.stringify({ paymentStatus: newStatus }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to update payment status');
       }
-  
+
       const updatedBooking = await response.json();
       console.log('Payment status updated:', updatedBooking);
       await sendPaymentStatusEmail(booking.email, booking.name, booking._id, newStatus);
+
+      // Auto-confirm when deposit is paid or fully paid
+      if (newStatus === 'deposit_paid' || newStatus === 'paid') {
+        handleUpdateStatus(booking._id, booking.email, 'confirmed');
+      }
 
     } catch (error) {
       console.error('Error updating payment status:', error);
     }
   };
-  
+
+
   const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
   };

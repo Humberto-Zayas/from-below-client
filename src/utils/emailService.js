@@ -27,7 +27,7 @@ export const sendEmail = async (to, subject, text, bookingDetails, isAdmin = fal
     : text;
 
   // Send the email request to your backend
-  const response = await fetch(`${apiUrl}/send-email`, {
+  const response = await fetch(`${apiUrl}/email/send-email`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export const sendStatusEmail = async (to, status, bookingId, depositLink = null)
   const apiUrl = process.env.REACT_APP_API_URL;
 
   // Send the status update request to your backend
-  const response = await fetch(`${apiUrl}/send-status-email`, {
+  const response = await fetch(`${apiUrl}/email/send-status-email`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export const sendBookingChangeEmail = async (to, name, id, newDate, newHours) =>
   console.log('frontend sendbookingchangeeamil ran')
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  const response = await fetch(`${apiUrl}/send-booking-change-email`, {
+  const response = await fetch(`${apiUrl}/email/send-booking-change-email`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ export const sendPaymentStatusEmail = async (to, name, id, paymentStatus) => {
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  const response = await fetch(`${apiUrl}/send-payment-status-email`, {
+  const response = await fetch(`${apiUrl}/email/send-payment-status-email`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

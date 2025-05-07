@@ -74,48 +74,14 @@ const BookingStatus = () => {
     return (price / 2).toFixed(2); // Calculate 50% deposit and format to 2 decimals
   };
 
-  const getPaymentInstructions = () => {
-    if (paymentMethod === 'none') {
-      return <p style={{ color: 'red' }}><strong>Your session will not be valid unless you choose a payment method.</strong></p>;
-    }
-
-    if (['venmo', 'cashapp', 'zelle'].includes(paymentMethod)) {
-      return (
-        <div>
-          <p><strong>Please pay a 50% deposit of ${getDepositAmount(booking.hours)} via {paymentMethod}.</strong></p>
-          <p><strong>Admin {paymentMethod} Info:</strong></p>
-          <ul>
-            <li>Venmo: @FromBelowStudio</li>
-            <li>Cash App: $FromBelowStudio</li>
-            <li>Zelle: frombelowstudio@gmail.com</li>
-          </ul>
-          <p>Include your <strong>Booking ID/Invoice Number: {booking._id}</strong> in the payment description.</p>
-          <p>After payment, email proof of payment to <strong>frombelowstudio@gmail.com</strong>.</p>
-          <img src={`${venmoQr}`} alt='venmo-code' loading="lazy" />
-        </div>
-      );
-    }
-
-    if (paymentMethod === 'cash') {
-      return (
-        <div>
-          <p><strong>Please bring the full amount in cash on the day of your session.</strong></p>
-          <p>Email <strong>frombelowstudio@gmail.com</strong> to confirm that you will be paying in cash.</p>
-        </div>
-      );
-    }
-
-    return null;
-  };
-
   const renderInstructions = () => {
     switch(paymentMethod) {
       case 'venmo':
-        return <img src={venmoQr} alt="Venmo QR" loading="lazy" />;
+        return <img src={venmoQr} style={{borderRadius: 8}} alt="Venmo QR" loading="lazy" />;
       case 'cashapp':
-        return <img src={cashappQr} alt="Cash App QR" loading="lazy" />;
+        return <img src={cashappQr} style={{borderRadius: 8}} alt="Cash App QR" loading="lazy" />;
       case 'zelle':
-        return <img src={zelleQr} alt="Zelle QR" loading="lazy" />;
+        return <img src={zelleQr} style={{borderRadius: 8}} alt="Zelle QR" loading="lazy" />;
       case 'applepay':
         return (
           <div>
