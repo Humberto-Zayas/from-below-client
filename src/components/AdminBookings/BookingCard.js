@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import { Card, CardContent, CardHeader, Collapse, Button, List, ListItem, ListItemText, ListItemIcon, Drawer, MenuItem, Select, FormControl } from '@mui/material';
-import { Email, Phone, Message, Hearing, AccessTime, Edit, Launch, Receipt, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
+import { Email, Phone, AttachMoney, Message, Hearing, AccessTime, Edit, Launch, Receipt, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { styled } from '@mui/system';
@@ -188,6 +188,15 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
                   />
                 </Button>
               </ListItemIcon>
+            </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <AttachMoney style={{ color: 'white' }} />
+              </ListItemIcon>
+              <ListItemText
+                primary="Payment Method"
+                secondary={booking.paymentMethod}
+              />
             </ListItem>
             <ListItem>
               <ListItemIcon>

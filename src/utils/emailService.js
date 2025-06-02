@@ -99,4 +99,28 @@ export const sendPaymentStatusEmail = async (to, name, id, paymentStatus) => {
   return response.json();
 };
 
+export const sendAdminCashPaymentNotification = async (
+  to,
+  clientName,
+  bookingId,
+  paymentMethod,
+  notes = ''
+) => {
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  const response = await fetch(`${apiUrl}/email/send-cash-payment-notification`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ to, clientName, bookingId, paymentMethod, notes }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to send admin cash payment notification email');
+  }
+
+  return response.json();
+};
+
 
