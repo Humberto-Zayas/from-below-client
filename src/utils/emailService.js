@@ -32,7 +32,8 @@ export const sendEmail = async (to, subject, text, bookingDetails, isAdmin = fal
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ to, subject, text: formattedDetails }),
+    body: JSON.stringify({ to, subject, text, bookingDetails, isAdmin }),
+
   });
 
   if (!response.ok) {
