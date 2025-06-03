@@ -402,7 +402,7 @@ const BookingStatus = () => {
                   )}
                 </List>
 
-                <FormControl style={{ paddingLeft: 20, paddingRight: 20 }} fullWidth>
+                <FormControl style={{ paddingLeft: 16, paddingRight: 16 }} fullWidth>
                   <InputLabel id="payment-method">Payment Method</InputLabel>
                   <Select
                     disabled={isLoggedIn}
