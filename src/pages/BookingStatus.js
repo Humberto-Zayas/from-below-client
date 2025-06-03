@@ -3,7 +3,7 @@ import Header from '../components/navbar';
 import dayjs from 'dayjs';
 import { useSearchParams, Link } from "react-router-dom";
 
-import { AppBar, Toolbar, Typography, Box, Divider, Container, MenuItem, Button, Select, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemText, Card, CardHeader } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, Divider, Container, Grid, MenuItem, Button, Select, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemText, Card, CardHeader, Stack } from '@mui/material';
 import { Email, CalendarToday, ListAlt, Phone, Logout, Receipt, Schedule, AttachMoney, Payment, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
 import fbslogo from "../images/fbs-red-logo.jpeg";
 import venmoQr from '../images/venmo-code.jpg';
@@ -12,6 +12,7 @@ import zelleQr from '../images/zelle-code.jpg'; import { styled } from '@mui/sys
 import { useParams } from 'react-router-dom';
 import './BookingStatus.css';
 import { sendAdminCashPaymentNotification } from '../utils/emailService'; // adjust path if needed
+import { sendStatusEmail } from '../utils/emailService';
 
 const api = process.env.REACT_APP_API_URL;
 const adminEmail = process.env.REACT_APP_ADMIN_EMAIL;
@@ -35,6 +36,7 @@ const Dot = styled('span')(({ theme, status }) => ({
 const BookingStatus = () => {
   const { bookingId } = useParams(); // Get booking ID from the URL
   const [booking, setBooking] = useState(null);
+  const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState('');
   const [formattedDate, setFormattedDate] = useState(dayjs(booking?.date).format('M/DD/YY'));
@@ -97,7 +99,7 @@ const BookingStatus = () => {
       case 'applepay':
         return (
           <div>
-            <p style={{ fontSize: 16 }}><strong>To pay with Apple Pay on your own:</strong></p>
+            <p style={{ fontSize: 16 }}><strong>To pay with Apple Pay on your own:</strong></p>
             <ol style={{ fontSize: 16 }}>
               <li style={{ marginBottom: 16 }}>Open Wallet on your iPhone/Mac.</li>
               <li style={{ marginBottom: 16 }}>Tap your card &gt; “Send”.</li>
@@ -109,11 +111,21 @@ const BookingStatus = () => {
         );
       case 'cash':
         return (
-          <div>
-            <p><strong>Bring the full amount in cash on session day.</strong></p>
-            <p>Email <strong>frombelowstudio@gmail.com</strong> to confirm.</p>
-          </div>
+          <Card sx={{ backgroundColor: '#2c2c2c', color: 'white', p: 2, mt: 0, borderLeft: '6px solid #00ffa2' }}>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <AttachMoney sx={{ fontSize: 40, color: '#00ffa2' }} />
+              <div>
+                <p style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0 }}>
+                  Bring the full amount in <span style={{ color: '#00ffa2' }}>cash</span> on your session day.
+                </p>
+                <p style={{ fontSize: '0.95rem', marginTop: 4 }}>
+                  Please confirm by emailing <strong>frombelowstudio@gmail.com</strong>.
+                </p>
+              </div>
+            </Stack>
+          </Card>
         );
+
       case 'none':
       default:
         return <p style={{ color: 'red' }}><strong>Select a payment method.</strong></p>;
@@ -155,10 +167,54 @@ const BookingStatus = () => {
     }
   };
 
+  const handleUpdateStatus = async (bookingId, bookingEmail, newStatus) => {
+    try {
+      const response = await fetch(`${api}/bookings/bookings/${bookingId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          status: newStatus,
+        }),
+      });
+
+      if (response.ok) {
+        const updatedBookings = bookings.map((booking) =>
+          booking._id === bookingId ? { ...booking, status: newStatus } : booking
+        );
+        setBookings(updatedBookings);
+
+        // Generate deposit link for confirmed bookings
+        const depositLink =
+          newStatus === 'confirmed'
+            ? `${process.env.REACT_APP_FRONTEND_URL}/pay-deposit/${bookingId}`
+            : null;
+
+        // Send status email with the deposit link
+        await sendStatusEmail(bookingEmail, newStatus, bookingId, depositLink);
+
+        alert(`Booking status updated and email sent to client.`);
+      } else {
+        console.error('Error updating booking status:', response.statusText);
+        alert('An error occurred while updating the booking status.');
+      }
+    } catch (error) {
+      console.error('Error updating booking status:', error);
+      alert('An error occurred while updating the booking status.');
+    }
+  };
+
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('isLoggedIn');
   };
+
+  const ButtonsWrapper = styled('div')({
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '8px',
+  });
 
   return (
     <>
@@ -214,136 +270,173 @@ const BookingStatus = () => {
         }}
       >
         {isLoggedIn && (
-        <Box
-          sx={{
-            position: "fixed",
-            width: "100%",
-            bottom: 0,
-            height: 64,
-            left: 0,
-            zIndex: 999,
-            borderTop: "1px solid #212121",
-            "@media (min-width: 768px)": {
-              width: 64,
-              left: 0,
-              paddingTop: 9,
-              height: "100%",
-              borderRight: "1px solid #212121",
-            },
-          }}
-          className="side-drawer"
-        >
-          <List
+          <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              width: "fit-content",
-              margin: "0 auto",
+              position: "fixed",
+              width: "100%",
+              bottom: 0,
+              height: 64,
+              left: 0,
+              zIndex: 999,
+              borderTop: "1px solid #212121",
               "@media (min-width: 768px)": {
-                flexDirection: "column",
+                width: 64,
+                left: 0,
+                paddingTop: 9,
+                height: "100%",
+                borderRight: "1px solid #212121",
               },
             }}
+            className="side-drawer"
           >
-            <ListItem
-              style={{ cursor: "pointer" }}
-              onClick={() => { }}
+            <List
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                width: "fit-content",
+                margin: "0 auto",
+                "@media (min-width: 768px)": {
+                  flexDirection: "column",
+                },
+              }}
             >
-              <CalendarToday style={{ color: "white" }} />
-            </ListItem>
-            <ListItem
-              style={{ cursor: "pointer" }}
-              onClick={() => { }}
-            >
-              <ListAlt style={{ color: "white" }} />
-            </ListItem>
-          </List>
-          <Divider />
-        </Box>
-        )}
-        <Container maxWidth="md" style={{ paddingTop: "0em" }}>
-          <Card sx={{ backgroundColor: '#202020', color: '#e7e7e7', maxWidth: 390, margin: '0 auto' }}>
-            <CardHeader
-              titleTypographyProps={{ variant: 'subtitle1' }}
-              title={
-                <span style={{ display: 'flex', alignItems: 'center' }}>
-                  <Dot className={booking.status === 'confirmed' ? 'confirmed-dot' : ''} status={booking.status} />
-                  {`${booking.name}`}&nbsp;
-                  <span style={{ color: 'rgba(255,255,255,0.6)' }}>
-                    &nbsp;{formattedDate}
-                  </span>
-
-                </span>
-              }
-            />
-            <List>
-              <ListItem>
-                <ListItemIcon><Receipt style={{ color: 'white' }} /></ListItemIcon>
-                <ListItemText primary="Booking Invoice" secondary={booking._id} />
-              </ListItem>
-
-              <ListItem>
-                <ListItemIcon>
-                  <Email style={{ color: 'white' }} />
-                </ListItemIcon>
-                <ListItemText primary="Email" secondary={booking.email} />
-              </ListItem>
-
-              <ListItem>
-                <ListItemIcon>
-                  <Phone style={{ color: 'white' }} />
-                </ListItemIcon>
-                <ListItemText primary="Phone Number" secondary={booking.phoneNumber} />
-              </ListItem>
-
-              <ListItem>
-                <ListItemIcon><Schedule style={{ color: 'white' }} /></ListItemIcon>
-                <ListItemText primary="Booking Hours/Total" secondary={booking.hours} />
-              </ListItem>
-
-              <ListItem>
-                <ListItemIcon><AttachMoney style={{ color: 'white' }} /></ListItemIcon>
-                <ListItemText primary="50% Deposit" secondary={`$${getDepositAmount(booking.hours)}`} />
-              </ListItem>
-
-              <ListItem>
-                <ListItemIcon><Payment style={{ color: 'white' }} /></ListItemIcon>
-                <ListItemText primary="Deposit Status" secondary={booking.paymentStatus} />
-              </ListItem>
+              <Link to="/admin?component=dateHours" style={{ textDecoration: 'none' }}>
+                <ListItem
+                  style={{ cursor: "pointer" }}
+                >
+                  <CalendarToday style={{ color: "white" }} />
+                </ListItem>
+              </Link>
+              <Link to="/admin?component=bookings">
+                <ListItem
+                  style={{ cursor: "pointer" }}
+                >
+                  <ListAlt style={{ color: "white" }} />
+                </ListItem>
+              </Link>
             </List>
+            <Divider />
+          </Box>
+        )}
+        <Container sx={{ px: 0 }} maxWidth="md">
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6} style={{margin: '0 auto'}}>
+              <Card sx={{ backgroundColor: '#202020', color: '#e7e7e7', maxWidth: 390, margin: '0 auto' }}>
+                <CardHeader
+                  titleTypographyProps={{ variant: 'subtitle1' }}
+                  title={
+                    <span style={{ display: 'flex', alignItems: 'center' }}>
+                      <Dot className={booking.status === 'confirmed' ? 'confirmed-dot' : ''} status={booking.status} />
+                      {`${booking.name}`}&nbsp;
+                      <span style={{ color: 'rgba(255,255,255,0.6)' }}>
+                        &nbsp;{formattedDate}
+                      </span>
 
-            <FormControl style={{ paddingLeft: 20, paddingRight: 20 }} fullWidth>
-              <InputLabel id="payment-method">Payment Method</InputLabel>
-              <Select
-                disabled={isLoggedIn}
-                label="payment-method"
-                id="payment-method"
-                value={paymentMethod}
-                onChange={handlePaymentMethodChange}
-                sx={{
-                  color: 'white',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'rgba(255, 255, 255, 0.23)',
-                  },
-                  '& .MuiOutlinedInput-input.Mui-disabled': {
-                    '-webkit-text-fill-color': 'rgba(203, 203, 203, 0.62)',
-                  },
-                  '& MuiSelect-root.Mui-disabled.input:disabled': {
-                    borderColor: 'rgba(203, 203, 203, 0.62)'
+                    </span>
                   }
-                }}
-              >
-                <MenuItem value="none">None</MenuItem>
-                <MenuItem value="venmo">Venmo</MenuItem>
-                <MenuItem value="cashapp">Cash App</MenuItem>
-                <MenuItem value="zelle">Zelle</MenuItem>
-                <MenuItem value="applepay">Apple Pay</MenuItem>
-                <MenuItem value="cash">Cash</MenuItem>
-              </Select>
-            </FormControl>
-            <div style={{ padding: 20 }}>
-              {renderInstructions()}
-            </div>
-          </Card>
+                />
+                <List>
+                  <ListItem>
+                    <ListItemIcon><Receipt style={{ color: 'white' }} /></ListItemIcon>
+                    <ListItemText primary="Booking Invoice" secondary={booking._id} />
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemIcon>
+                      <Email style={{ color: 'white' }} />
+                    </ListItemIcon>
+                    <ListItemText primary="Email" secondary={booking.email} />
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemIcon>
+                      <Phone style={{ color: 'white' }} />
+                    </ListItemIcon>
+                    <ListItemText primary="Phone Number" secondary={booking.phoneNumber} />
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemIcon><Schedule style={{ color: 'white' }} /></ListItemIcon>
+                    <ListItemText primary="Booking Hours/Total" secondary={booking.hours} />
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemIcon><AttachMoney style={{ color: 'white' }} /></ListItemIcon>
+                    <ListItemText primary="50% Deposit" secondary={`$${getDepositAmount(booking.hours)}`} />
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemIcon><Payment style={{ color: 'white' }} /></ListItemIcon>
+                    <ListItemText primary="Deposit Status" secondary={booking.paymentStatus} />
+                  </ListItem>
+                  {isLoggedIn && (
+                    <ListItem sx={{ flexWrap: 'wrap' }}>
+                      <ListItemIcon>
+                        <Dot
+                          className={booking.status === 'confirmed' ? 'confirmed-dot' : ''}
+                          status={booking.status}
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Status" secondary={booking.status} />
+                      <ButtonsWrapper sx={{ margin: '10px auto' }}>
+                        <Button
+                          sx={{
+                            mr: 2, color: '#00ffa2', borderColor: 'rgba(65, 255, 186, .4)', '&:hover': {
+                              borderColor: '#00ffa2', // Change the border color on hover
+                            },
+                          }}
+                          variant="outlined"
+                          onClick={() => handleUpdateStatus(booking._id, booking.email, 'confirmed')}
+                        >
+                          Confirm
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          sx={{ color: '#d1203d', borderColor: 'rgb(209 32 61 / 74%)', '&:hover': { borderColor: '#d1203d' } }}
+                          onClick={() => handleUpdateStatus(booking._id, booking.email, 'denied')}
+                        >
+                          Deny
+                        </Button>
+                      </ButtonsWrapper>
+                    </ListItem>
+                  )}
+                </List>
+
+                <FormControl style={{ paddingLeft: 20, paddingRight: 20 }} fullWidth>
+                  <InputLabel id="payment-method">Payment Method</InputLabel>
+                  <Select
+                    disabled={isLoggedIn}
+                    label="payment-method"
+                    id="payment-method"
+                    value={paymentMethod}
+                    onChange={handlePaymentMethodChange}
+                    sx={{
+                      color: 'white',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'rgba(255, 255, 255, 0.23)',
+                      },
+                      '& .MuiOutlinedInput-input.Mui-disabled': {
+                        '-webkit-text-fill-color': 'rgba(203, 203, 203, 0.62)',
+                      },
+                      '& MuiSelect-root.Mui-disabled.input:disabled': {
+                        borderColor: 'rgba(203, 203, 203, 0.62)'
+                      }
+                    }}
+                  >
+                    <MenuItem value="none">None</MenuItem>
+                    <MenuItem value="venmo">Venmo</MenuItem>
+                    <MenuItem value="cashapp">Cash App</MenuItem>
+                    <MenuItem value="zelle">Zelle</MenuItem>
+                    <MenuItem value="applepay">Apple Pay</MenuItem>
+                    <MenuItem value="cash">Cash</MenuItem>
+                  </Select>
+                </FormControl>
+                <div style={{ padding: 20 }}>
+                  {renderInstructions()}
+                </div>
+              </Card>
+            </Grid>
+          </Grid>
         </Container>
       </Box>
 
