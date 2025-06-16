@@ -14,7 +14,7 @@ import { sendEmail } from '../../utils/emailService';
 const steps = ['Pick A Date', 'Pick Your Hours', 'Enter Your Information'];
 const api = process.env.REACT_APP_API_URL;
 
-export default function HorizontalLinearStepper({handleClose}) {
+export default function HorizontalLinearStepper({ handleClose }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [value, setValue] = React.useState(dayjs().format('YYYY-MM-DD'));
@@ -106,7 +106,7 @@ export default function HorizontalLinearStepper({handleClose}) {
 
       const responseData = await response.json(); // Parse JSON response
       if (response.ok) {
-        
+
         // Reset the form state and move to the next step
         setFormState({
           name: null,
@@ -170,7 +170,7 @@ export default function HorizontalLinearStepper({handleClose}) {
             You will receive a confirmation email with your booking details and payment options for a deposit. In order to secure your session a 50% deposit will be required.
           </Typography>
           <Typography sx={{ mt: 2, mb: 1, color: 'white' }}>
-             If you have any questions or concerns please reach out to frombelowstudio@gmail.com.
+            If you have any questions or concerns please reach out to frombelowstudio@gmail.com.
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />
