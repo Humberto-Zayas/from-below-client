@@ -328,7 +328,11 @@ const BookingStatus = () => {
                       <Dot className={booking.status === 'confirmed' ? 'confirmed-dot' : ''} status={booking.status} />
                       {`${booking.name}`}&nbsp;
                       <span style={{ color: 'rgba(255,255,255,0.6)' }}>
-                        &nbsp;{formattedDate}
+                        &nbsp;{new Date(booking.date).toLocaleDateString('en-US', {
+                          year: '2-digit',
+                          month: 'numeric',
+                          day: 'numeric',
+                        })}
                       </span>
 
                     </span>
@@ -356,7 +360,14 @@ const BookingStatus = () => {
 
                   <ListItem>
                     <ListItemIcon><Schedule style={{ color: 'white' }} /></ListItemIcon>
-                    <ListItemText primary="Booking Hours/Total" secondary={booking.hours} />
+                    <ListItemText
+                      primary="Date and Hours"
+                      secondary={`${new Date(booking.date).toLocaleDateString('en-US', {
+                        year: '2-digit',
+                        month: 'numeric',
+                        day: 'numeric',
+                      })}, ${booking.hours}`}
+                    />
                   </ListItem>
 
                   <ListItem>

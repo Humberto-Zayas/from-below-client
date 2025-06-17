@@ -235,18 +235,32 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
                     mr: 2, color: '#00ffa2', borderColor: 'rgba(65, 255, 186, .4)', '&:hover': {
                       borderColor: '#00ffa2', // Change the border color on hover
                     },
+                    '&.MuiButton-root.Mui-disabled': {
+                      color: 'rgba(223, 223, 223, 0.4)',
+                      borderColor: 'rgba(210, 210, 210, 0.3)'
+                    }
                   }}
+                  disabled={booking.status === 'confirmed'}
                   variant="outlined"
                   onClick={() => handleUpdateStatus(booking._id, booking.email, 'confirmed')}
                 >
-                  Confirm
+                  {booking.status === 'confirmed' ? 'Confirmed' : 'Confirm'}
                 </Button>
                 <Button
                   variant="outlined"
-                  sx={{ color: '#d1203d', borderColor: 'rgb(209 32 61 / 74%)', '&:hover': { borderColor: '#d1203d' } }}
+                  disabled={booking.status === 'denied'}
+                  sx={{
+                    color: '#d1203d', borderColor: 'rgb(209 32 61 / 74%)',
+                    '&:hover': { borderColor: '#d1203d' },
+                    '&.MuiButton-root.Mui-disabled': {
+                      color: 'rgba(223, 223, 223, 0.4)',
+                      borderColor: 'rgba(210, 210, 210, 0.3)'
+                    }
+                  }}
                   onClick={() => handleUpdateStatus(booking._id, booking.email, 'denied')}
                 >
-                  Deny
+                  {booking.status === 'denied' ? 'Denied' : 'Deny'}
+
                 </Button>
               </ButtonsWrapper>
             </ListItem>
@@ -270,6 +284,8 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
           id={booking._id}
           value={formattedDate}
           hours={booking.hours}
+          originalDate={formattedDate}
+          originalHours={booking.hours}
           onBookingUpdate={handleBookingUpdateAndFormat}
           closeDrawer={handleDrawerClose}
         />

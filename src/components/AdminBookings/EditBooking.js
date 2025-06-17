@@ -7,7 +7,7 @@ import { sendBookingChangeEmail } from '../../utils/emailService'; // Import the
 
 const api = process.env.REACT_APP_API_URL;
 
-const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
+const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer, originalDate, originalHours }) => {
   const [day, setDay] = useState(dayjs(value).format('YYYY-MM-DD'));
   const [blackoutDays, setBlackoutDays] = useState([]);
   const [maxDate, setMaxDate] = useState(null);
@@ -81,7 +81,7 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
     if (selectedHourOption) {
       const transformedHour = `${selectedHourOption.label}/${selectedHourOption.price}`;
       const transformedDay = dayjs(day).format('YYYY-MM-DD');
-  
+
       fetch(`${api}/bookings/bookings/datehour/${id}`, {
         method: 'PUT',
         headers: {
@@ -97,15 +97,17 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
           console.log('Booking updated:', updatedBooking);
           onBookingUpdate(transformedHour, day);
           closeDrawer();
-  
+
           // Ensure email is sent to the client
           if (updatedBooking.email && updatedBooking.name) {
             console.log('handleSave updated condition ran')
             sendBookingChangeEmail(
-              updatedBooking.email, 
+              updatedBooking.email,
               updatedBooking.name,
               updatedBooking._id,
-              transformedDay, 
+              originalDate,
+              originalHours,
+              transformedDay,
               selectedHourOption.label
             ).catch(error => console.error('Error sending email:', error));
           }
@@ -115,7 +117,7 @@ const EditBooking = ({ value, hours, id, onBookingUpdate, closeDrawer }) => {
         });
     }
   };
-  
+
   return (
     <Container maxWidth="md" sx={{ display: 'flex', height: '100%', flexDirection: 'column' }}>
       <div style={{ position: 'relative', width: '100%' }}>
