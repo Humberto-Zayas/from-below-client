@@ -32,7 +32,6 @@ const Dot = styled('span')(({ theme, status }) => ({
   border: status === 'unconfirmed' ? '1px solid #ccc' : 'none',
 }));
 
-
 const BookingStatus = () => {
   const { bookingId } = useParams(); // Get booking ID from the URL
   const [booking, setBooking] = useState(null);
@@ -69,7 +68,7 @@ const BookingStatus = () => {
     };
 
     fetchBooking();
-  }, [bookingId]);
+  }, [bookingId, bookings]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -320,7 +319,7 @@ const BookingStatus = () => {
         )}
         <Container sx={{ px: 0 }} maxWidth="md">
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} style={{margin: '0 auto'}}>
+            <Grid item xs={12} md={6} style={{ margin: '0 auto' }}>
               <Card sx={{ backgroundColor: '#202020', color: '#e7e7e7', maxWidth: 390, margin: '0 auto' }}>
                 <CardHeader
                   titleTypographyProps={{ variant: 'subtitle1' }}
@@ -381,21 +380,37 @@ const BookingStatus = () => {
                       <ButtonsWrapper sx={{ margin: '10px auto' }}>
                         <Button
                           sx={{
-                            mr: 2, color: '#00ffa2', borderColor: 'rgba(65, 255, 186, .4)', '&:hover': {
-                              borderColor: '#00ffa2', // Change the border color on hover
+                            mr: 2,
+                            color: '#00ffa2',
+                            borderColor: 'rgba(65, 255, 186, .4)',
+                            '&:hover': {
+                              borderColor: '#00ffa2',
                             },
+                            '&.MuiButton-root.Mui-disabled': {
+                              color: 'rgba(223, 223, 223, 0.4)',
+                              borderColor: 'rgba(210, 210, 210, 0.3)'
+                            }
                           }}
+                          disabled={booking.status === 'confirmed'}
                           variant="outlined"
                           onClick={() => handleUpdateStatus(booking._id, booking.email, 'confirmed')}
                         >
-                          Confirm
+                          {booking.status === 'confirmed' ? 'Confirmed' : 'Confirm'}
                         </Button>
+
                         <Button
                           variant="outlined"
-                          sx={{ color: '#d1203d', borderColor: 'rgb(209 32 61 / 74%)', '&:hover': { borderColor: '#d1203d' } }}
+                          sx={{
+                            color: '#d1203d', borderColor: 'rgb(209 32 61 / 74%)', '&:hover': { borderColor: '#d1203d' },
+                            '&.MuiButton-root.Mui-disabled': {
+                              color: 'rgba(223, 223, 223, 0.4)',
+                              borderColor: 'rgba(210, 210, 210, 0.3)'
+                            }
+                          }}
+                          disabled={booking.status === 'denied'}
                           onClick={() => handleUpdateStatus(booking._id, booking.email, 'denied')}
                         >
-                          Deny
+                          {booking.status === 'denied' ? 'Denied' : 'Deny'}
                         </Button>
                       </ButtonsWrapper>
                     </ListItem>
