@@ -38,7 +38,6 @@ const BookingStatus = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [formattedDate, setFormattedDate] = useState(dayjs(booking?.date).format('M/DD/YY'));
   const [error, setError] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -328,11 +327,7 @@ const BookingStatus = () => {
                       <Dot className={booking.status === 'confirmed' ? 'confirmed-dot' : ''} status={booking.status} />
                       {`${booking.name}`}&nbsp;
                       <span style={{ color: 'rgba(255,255,255,0.6)' }}>
-                        &nbsp;{new Date(booking.date).toLocaleDateString('en-US', {
-                          year: '2-digit',
-                          month: 'numeric',
-                          day: 'numeric',
-                        })}
+                        &nbsp;{dayjs(booking.date).format('M/DD/YY')} 
                       </span>
 
                     </span>
@@ -362,11 +357,7 @@ const BookingStatus = () => {
                     <ListItemIcon><Schedule style={{ color: 'white' }} /></ListItemIcon>
                     <ListItemText
                       primary="Date and Hours"
-                      secondary={`${new Date(booking.date).toLocaleDateString('en-US', {
-                        year: '2-digit',
-                        month: 'numeric',
-                        day: 'numeric',
-                      })}, ${booking.hours}`}
+                      secondary={dayjs(booking.date).format('M/DD/YY') + `, ${booking.hours}`}
                     />
                   </ListItem>
 
@@ -442,7 +433,7 @@ const BookingStatus = () => {
                         borderColor: 'rgba(255, 255, 255, 0.23)',
                       },
                       '& .MuiOutlinedInput-input.Mui-disabled': {
-                        '-webkit-text-fill-color': 'rgba(203, 203, 203, 0.62)',
+                        'WebkitTextFillColor': 'rgba(203, 203, 203, 0.62)',
                       },
                       '& MuiSelect-root.Mui-disabled.input:disabled': {
                         borderColor: 'rgba(203, 203, 203, 0.62)'
