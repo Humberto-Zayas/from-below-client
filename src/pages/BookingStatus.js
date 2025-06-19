@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { useSearchParams, Link } from "react-router-dom";
 
 import { AppBar, Toolbar, Typography, Box, Divider, Container, Grid, MenuItem, Button, Select, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemText, Card, CardHeader, Stack } from '@mui/material';
-import { Email, CalendarToday, ListAlt, Phone, Logout, Receipt, Schedule, AttachMoney, Payment, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
+import { Email, CalendarToday, ListAlt, Phone, Logout, Receipt, Schedule, AttachMoney, Payment, Message, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
 import fbslogo from "../images/fbs-red-logo.jpeg";
 import venmoQr from '../images/venmo-code.jpg';
 import cashappQr from '../images/cashapp-code.jpg';
@@ -344,6 +344,13 @@ const BookingStatus = () => {
                       <Email style={{ color: 'white' }} />
                     </ListItemIcon>
                     <ListItemText primary="Email" secondary={booking.email} />
+                  </ListItem>
+
+                   <ListItem>
+                    <ListItemIcon>
+                      <Message style={{ color: 'white' }} />
+                    </ListItemIcon> 
+                    <ListItemText primary="Message" secondary={booking.message} />
                   </ListItem>
 
                   <ListItem>
