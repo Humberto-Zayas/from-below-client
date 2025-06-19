@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/navbar';
 import dayjs from 'dayjs';
 import { useSearchParams, Link } from "react-router-dom";
+import { AddToCalendarButton } from 'add-to-calendar-button-react';
 
 import { AppBar, Toolbar, Typography, Box, Divider, Container, Grid, MenuItem, Button, Select, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemText, Card, CardHeader, Stack } from '@mui/material';
 import { Email, CalendarToday, ListAlt, Phone, Logout, Receipt, Schedule, AttachMoney, Payment, Message, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
@@ -327,7 +328,7 @@ const BookingStatus = () => {
                       <Dot className={booking.status === 'confirmed' ? 'confirmed-dot' : ''} status={booking.status} />
                       {`${booking.name}`}&nbsp;
                       <span style={{ color: 'rgba(255,255,255,0.6)' }}>
-                        &nbsp;{dayjs(booking.date).format('M/DD/YY')} 
+                        &nbsp;{dayjs(booking.date).format('M/DD/YY')}
                       </span>
 
                     </span>
@@ -340,16 +341,31 @@ const BookingStatus = () => {
                   </ListItem>
 
                   <ListItem>
+                    <ListItemIcon><CalendarToday style={{ color: 'white' }} /></ListItemIcon>
+                    <AddToCalendarButton
+                      name="From Below Studio Recording Session"
+                      options={['Apple', 'Google', 'iCal', 'Outlook.com', 'Yahoo', 'Microsoft365']}
+                      lightMode="dark"
+                      location="From Below Studio"
+                      startDate={booking.date}
+                      endDate={booking.date}
+                      timeZone="America/New_York"
+                      hideCheckmark
+                      hideBackground
+                    ></AddToCalendarButton>
+                  </ListItem>
+
+                  <ListItem>
                     <ListItemIcon>
                       <Email style={{ color: 'white' }} />
                     </ListItemIcon>
                     <ListItemText primary="Email" secondary={booking.email} />
                   </ListItem>
 
-                   <ListItem>
+                  <ListItem>
                     <ListItemIcon>
                       <Message style={{ color: 'white' }} />
-                    </ListItemIcon> 
+                    </ListItemIcon>
                     <ListItemText primary="Message" secondary={booking.message} />
                   </ListItem>
 
