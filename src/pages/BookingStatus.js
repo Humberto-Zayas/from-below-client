@@ -88,49 +88,80 @@ const BookingStatus = () => {
     return (price / 2).toFixed(2); // Calculate 50% deposit and format to 2 decimals
   };
 
-  const renderInstructions = () => {
-    switch (paymentMethod) {
-      case 'venmo':
-        return <img src={venmoQr} style={{ borderRadius: 8 }} alt="Venmo QR" loading="lazy" />;
-      case 'cashapp':
-        return <img src={cashappQr} style={{ borderRadius: 8 }} alt="Cash App QR" loading="lazy" />;
-      case 'zelle':
-        return <img src={zelleQr} style={{ borderRadius: 8 }} alt="Zelle QR" loading="lazy" />;
-      case 'applepay':
-        return (
-          <div>
-            <p style={{ fontSize: 16 }}><strong>To pay with Apple Pay on your own:</strong></p>
-            <ol style={{ fontSize: 16 }}>
-              <li style={{ marginBottom: 16 }}>Open Wallet on your iPhone/Mac.</li>
-              <li style={{ marginBottom: 16 }}>Tap your card &gt; “Send”.</li>
-              <li style={{ marginBottom: 16 }}>Enter: <strong>youngavi03@yahoo.com</strong></li>
-              <li style={{ marginBottom: 16 }}>Enter amount: <strong>${getDepositAmount(booking.hours)}</strong>.</li>
-              <li>Hit “Pay” and include Booking ID <strong>{booking._id}</strong>.</li>
-            </ol>
-          </div>
-        );
-      case 'cash':
-        return (
-          <Card sx={{ backgroundColor: '#2c2c2c', color: 'white', p: 2, mt: 0, borderLeft: '6px solid #00ffa2' }}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <AttachMoney sx={{ fontSize: 40, color: '#00ffa2' }} />
-              <div>
-                <p style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0 }}>
-                  Bring the full amount in <span style={{ color: '#00ffa2' }}>cash</span> on your session day.
-                </p>
-                <p style={{ fontSize: '0.95rem', marginTop: 4 }}>
-                  Please confirm by emailing <strong>frombelowstudio@gmail.com</strong>.
-                </p>
-              </div>
-            </Stack>
-          </Card>
-        );
+const renderInstructions = () => {
+  const amount = getDepositAmount(booking.hours);
+  const bookingId = booking._id;
 
-      case 'none':
-      default:
-        return <p style={{ color: 'red' }}><strong>Select a payment method.</strong></p>;
-    }
-  };
+  const venmoLink = `venmo://paycharge?txn=pay&recipients=FromBelowStudio&amount=${amount}&note=Booking ID ${bookingId}`;
+  const cashAppLink = `https://cash.app/$FromBelowStudio/${amount}`;
+
+  const commonInstruction = (qrImage, link, label) => (
+    <div style={{ textAlign: 'center' }}>
+      <p style={{ fontSize: 16 }}>
+        To pay your deposit of <strong>${amount}</strong>, scan the QR or&nbsp;
+        <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: '#00ffa2', fontWeight: 600 }}>
+          tap here to open {label}
+        </a>.
+      </p>
+      <p style={{ fontSize: 14, color: '#999' }}>
+        Please include Booking ID <strong>{bookingId}</strong> in the notes.
+      </p>
+      <img src={qrImage} style={{ borderRadius: 8, maxWidth: '100%', marginBottom: 12 }} alt={`${label} QR`} loading="lazy" />
+    </div>
+  );
+
+  switch (paymentMethod) {
+    case 'venmo':
+      return commonInstruction(venmoQr, venmoLink, 'Venmo');
+    case 'cashapp':
+      return commonInstruction(cashappQr, cashAppLink, 'Cash App');
+    case 'zelle':
+      return (
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ fontSize: 16 }}>
+            To pay your deposit of <strong>${amount}</strong>, scan the QR and send payment via Zelle to <strong>youngavi03@yahoo.com</strong>.
+          </p>
+          <p style={{ fontSize: 14, color: '#999' }}>
+            Include Booking ID <strong>{bookingId}</strong> in the memo.
+          </p>
+          <img src={zelleQr} style={{ borderRadius: 8, maxWidth: '100%', marginBottom: 12 }} alt="Zelle QR" loading="lazy" />
+        </div>
+      );
+    case 'applepay':
+      return (
+        <div>
+          <p style={{ fontSize: 16 }}><strong>To pay with Apple Pay on your own:</strong></p>
+          <ol style={{ fontSize: 16 }}>
+            <li style={{ marginBottom: 16 }}>Open Wallet on your iPhone/Mac.</li>
+            <li style={{ marginBottom: 16 }}>Tap your card &gt; “Send”.</li>
+            <li style={{ marginBottom: 16 }}>Enter: <strong>youngavi03@yahoo.com</strong></li>
+            <li style={{ marginBottom: 16 }}>Enter amount: <strong>${amount}</strong>.</li>
+            <li>Hit “Pay” and include Booking ID <strong>{bookingId}</strong>.</li>
+          </ol>
+        </div>
+      );
+    case 'cash':
+      return (
+        <Card sx={{ backgroundColor: '#2c2c2c', color: 'white', p: 2, mt: 0, borderLeft: '6px solid #00ffa2' }}>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <AttachMoney sx={{ fontSize: 40, color: '#00ffa2' }} />
+            <div>
+              <p style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0 }}>
+                Bring the full amount in <span style={{ color: '#00ffa2' }}>cash</span> on your session day.
+              </p>
+              <p style={{ fontSize: '0.95rem', marginTop: 4 }}>
+                Please confirm by emailing <strong>frombelowstudio@gmail.com</strong>.
+              </p>
+            </div>
+          </Stack>
+        </Card>
+      );
+    case 'none':
+    default:
+      return <p style={{ color: 'red' }}><strong>Select a payment method.</strong></p>;
+  }
+};
+
 
   const handlePaymentMethodChange = async (event) => {
     const newMethod = event.target.value;
