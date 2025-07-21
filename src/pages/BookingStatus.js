@@ -7,9 +7,10 @@ import { AddToCalendarButton } from 'add-to-calendar-button-react';
 import { AppBar, Toolbar, Typography, Box, Divider, Container, Grid, MenuItem, Button, Select, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemText, Card, CardHeader, Stack } from '@mui/material';
 import { Email, CalendarToday, ListAlt, Phone, Logout, Receipt, Schedule, AttachMoney, Payment, Message, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
 import fbslogo from "../images/fbs-red-logo.jpeg";
-import venmoQr from '../images/venmo-code.jpg';
-import cashappQr from '../images/cashapp-code.jpg';
-import zelleQr from '../images/zelle-code.jpg'; import { styled } from '@mui/system';
+import venmoQr from '../images/venmo-code.png';
+import cashappQr from '../images/cashapp-code.png';
+import zelleQr from '../images/zelle-code.png'; 
+import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 import './BookingStatus.css';
 import { sendAdminCashPaymentNotification } from '../utils/emailService'; // adjust path if needed
@@ -102,7 +103,7 @@ const BookingStatus = () => {
             <ol style={{ fontSize: 16 }}>
               <li style={{ marginBottom: 16 }}>Open Wallet on your iPhone/Mac.</li>
               <li style={{ marginBottom: 16 }}>Tap your card &gt; “Send”.</li>
-              <li style={{ marginBottom: 16 }}>Enter: <strong>frombelowstudio@gmail.com</strong></li>
+              <li style={{ marginBottom: 16 }}>Enter: <strong>youngavi03@yahoo.com</strong></li>
               <li style={{ marginBottom: 16 }}>Enter amount: <strong>${getDepositAmount(booking.hours)}</strong>.</li>
               <li>Hit “Pay” and include Booking ID <strong>{booking._id}</strong>.</li>
             </ol>
