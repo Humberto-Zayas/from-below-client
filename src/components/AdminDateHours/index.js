@@ -25,6 +25,8 @@ export default function AdminDateHours() {
   const [dayData, setDayData] = useState(null);
   const [multiSelect, setMultiSelect] = useState(false); // Toggle for multi-select mode
   const [selectedDates, setSelectedDates] = useState([]); // Array of selected dates
+  const [disabledDatesList, setDisabledDatesList] = useState([]);
+  console.log('disabled days: ', disabledDatesList)
 
   useEffect(() => {
     console.log('value on useEffect: ', value)
@@ -66,6 +68,26 @@ export default function AdminDateHours() {
     }
   }, [dayData]);
 
+  useEffect(() => {
+    const fetchDisabledDates = async () => {
+      try {
+        const response = await fetch(`${api}/days/blackoutDays`);
+        const data = await response.json();
+
+        // Filter only disabled days and extract date strings
+        const disabledDateStrings = data
+          .filter(day => day.disabled)
+          .map(day => day.date); // Extract "2025-08-24" strings
+
+        setDisabledDatesList(disabledDateStrings);
+      } catch (error) {
+        console.error('Error fetching blackout days:', error);
+      }
+    };
+
+    fetchDisabledDates();
+  }, []);
+
   const handleDatePick = (selectedDate) => {
     const formattedDate = selectedDate.toISOString().split('T')[0];
     if (multiSelect) {
@@ -82,20 +104,20 @@ export default function AdminDateHours() {
 
   const handleOptionToggle = (option) => {
     if (!dayData) return;
-  
+
     // Update the selected options locally
     const updatedOptions = selectedOptions.map((opt) =>
       opt.label === option.label ? { ...opt, enabled: !opt.enabled } : opt
     );
     setSelectedOptions(updatedOptions);
-  
+
     // If multi-select is enabled, update hour blocks for all selected dates
     const selectedDatesToUpdate = multiSelect ? selectedDates : [value]; // Use selectedDates if multi-select is true
-  
+
     // Create an array of API calls for each date
     const updatePromises = selectedDatesToUpdate.map((date) => {
       const apiUrl = `${api}/days/updateOrCreateDay`;
-  
+
       return fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -112,7 +134,7 @@ export default function AdminDateHours() {
         }),
       });
     });
-  
+
     // Wait for all API calls to finish
     Promise.all(updatePromises)
       .then((responses) => Promise.all(responses.map((res) => res.json())))
@@ -122,7 +144,7 @@ export default function AdminDateHours() {
       .catch((error) => {
         console.error("Error creating or updating day:", error);
       });
-  };  
+  };
 
   const handleMaxDateChange = (newMaxDate) => {
     setMaxDate(newMaxDate);
@@ -148,44 +170,41 @@ export default function AdminDateHours() {
 
   const handleDisabledToggle = () => {
     if (!dayData) return;
-  
+
     const newDisabled = !dayData.disabled;
-  
+
     // Determine which dates to update
-    const datesToUpdate = multiSelect ? selectedDates : [value]; 
-  
+    const datesToUpdate = multiSelect ? selectedDates : [value];
+
     if (datesToUpdate.length === 0) return; // Avoid making unnecessary API calls
-  
+
     // Make API calls for each selected date
     const disablePromises = datesToUpdate.map((date) => {
       const apiUrl = `${api}/days/editDay`;
-  
+
       return fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          date: date,  
+          date: date,
           disabled: newDisabled,
         }),
       });
     });
-  
+
     // Wait for all API calls to complete
     Promise.all(disablePromises)
       .then((responses) => Promise.all(responses.map((res) => res.json())))
       .then((dataArray) => {
         console.log("Disabled state updated:", dataArray);
-  
-        // Update state based on response
         setDayData(dataArray[0]); // Assuming all updates return the same format
       })
       .catch((error) => {
         console.error("Error updating disabled state:", error);
       });
   };
-  
 
   return (
     <Grid container spacing={2}>
@@ -222,13 +241,6 @@ export default function AdminDateHours() {
               />
             </ListItem>
           </List>
-          {/* <StaticDatePicker
-            maxDate={maxDate}
-            disablePast={true}
-            value={value}
-            onChange={handleDatePick}
-            showToolbar={false}
-          /> */}
           <StaticDatePicker
             maxDate={maxDate}
             disablePast={true}
@@ -238,11 +250,16 @@ export default function AdminDateHours() {
             renderDay={(day, _selectedDates, pickersDayProps) => {
               const formattedDay = day.format('YYYY-MM-DD');
               const isSelected = selectedDates.includes(formattedDay);
+              const isDisabledVisually = disabledDatesList.includes(formattedDay);
 
               return (
                 <PickersDay
                   {...pickersDayProps}
-                  className={`${pickersDayProps.className} ${isSelected ? 'Mui-selected' : ''}`}
+                  className={`
+                    ${pickersDayProps.className}
+                    ${isSelected ? 'Mui-selected' : ''}
+                    ${isDisabledVisually ? 'visually-disabled-day' : ''}
+                  `}
                 />
               );
             }}

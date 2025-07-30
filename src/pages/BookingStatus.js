@@ -9,7 +9,7 @@ import { Email, CalendarToday, ListAlt, Phone, Logout, Receipt, Schedule, Attach
 import fbslogo from "../images/fbs-red-logo.jpeg";
 import venmoQr from '../images/venmo-code.png';
 import cashappQr from '../images/cashapp-code.png';
-import zelleQr from '../images/zelle-code.png'; 
+import zelleQr from '../images/zelle-code.png';
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 import './BookingStatus.css';
@@ -88,79 +88,93 @@ const BookingStatus = () => {
     return (price / 2).toFixed(2); // Calculate 50% deposit and format to 2 decimals
   };
 
-const renderInstructions = () => {
-  const amount = getDepositAmount(booking.hours);
-  const bookingId = booking._id;
+  const renderInstructions = () => {
+    const amount = getDepositAmount(booking.hours);
+    const bookingId = booking._id;
 
-  const venmoLink = `venmo://paycharge?txn=pay&recipients=FromBelowStudio&amount=${amount}&note=Booking ID ${bookingId}`;
-  const cashAppLink = `https://cash.app/$FromBelowStudio/${amount}`;
+    const venmoMobileLink = `venmo://paycharge?txn=pay&recipients=FromBelowStudio&amount=${amount}&note=Booking ID ${bookingId}`;
+    const venmoWebLink = `https://venmo.com/FromBelowStudio`;
 
-  const commonInstruction = (qrImage, link, label) => (
-    <div style={{ textAlign: 'center' }}>
-      <p style={{ fontSize: 16 }}>
-        To pay your deposit of <strong>${amount}</strong>, scan the QR or&nbsp;
-        <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: '#00ffa2', fontWeight: 600 }}>
-          tap here to open {label}
-        </a>.
-      </p>
-      <p style={{ fontSize: 14, color: '#999' }}>
-        Please include Booking ID <strong>{bookingId}</strong> in the notes.
-      </p>
-      <img src={qrImage} style={{ borderRadius: 8, maxWidth: '100%', marginBottom: 12 }} alt={`${label} QR`} loading="lazy" />
-    </div>
-  );
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const venmoLink = isMobile ? venmoMobileLink : venmoWebLink;
+    const cashAppLink = `https://cash.app/$FromBelowStudio/${amount}`;
 
-  switch (paymentMethod) {
-    case 'venmo':
-      return commonInstruction(venmoQr, venmoLink, 'Venmo');
-    case 'cashapp':
-      return commonInstruction(cashappQr, cashAppLink, 'Cash App');
-    case 'zelle':
-      return (
-        <div style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: 16 }}>
-            To pay your deposit of <strong>${amount}</strong>, scan the QR and send payment via Zelle to <strong>youngavi03@yahoo.com</strong>.
-          </p>
-          <p style={{ fontSize: 14, color: '#999' }}>
-            Include Booking ID <strong>{bookingId}</strong> in the memo.
-          </p>
-          <img src={zelleQr} style={{ borderRadius: 8, maxWidth: '100%', marginBottom: 12 }} alt="Zelle QR" loading="lazy" />
-        </div>
-      );
-    case 'applepay':
-      return (
-        <div>
-          <p style={{ fontSize: 16 }}><strong>To pay with Apple Pay on your own:</strong></p>
-          <ol style={{ fontSize: 16 }}>
-            <li style={{ marginBottom: 16 }}>Open Wallet on your iPhone/Mac.</li>
-            <li style={{ marginBottom: 16 }}>Tap your card &gt; “Send”.</li>
-            <li style={{ marginBottom: 16 }}>Enter: <strong>youngavi03@yahoo.com</strong></li>
-            <li style={{ marginBottom: 16 }}>Enter amount: <strong>${amount}</strong>.</li>
-            <li>Hit “Pay” and include Booking ID <strong>{bookingId}</strong>.</li>
-          </ol>
-        </div>
-      );
-    case 'cash':
-      return (
-        <Card sx={{ backgroundColor: '#2c2c2c', color: 'white', p: 2, mt: 0, borderLeft: '6px solid #00ffa2' }}>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <AttachMoney sx={{ fontSize: 40, color: '#00ffa2' }} />
-            <div>
-              <p style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0 }}>
-                Bring the full amount in <span style={{ color: '#00ffa2' }}>cash</span> on your session day.
-              </p>
-              <p style={{ fontSize: '0.95rem', marginTop: 4 }}>
-                Please confirm by emailing <strong>frombelowstudio@gmail.com</strong>.
-              </p>
-            </div>
-          </Stack>
-        </Card>
-      );
-    case 'none':
-    default:
-      return <p style={{ color: 'red' }}><strong>Select a payment method.</strong></p>;
-  }
-};
+    const commonInstruction = (qrImage, link, label) => (
+      <div style={{ textAlign: 'center' }}>
+        <p style={{ fontSize: 16 }}>
+          To pay your deposit of <strong>${amount}</strong>, scan the QR or&nbsp;
+          <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: '#00ffa2', fontWeight: 600 }}>
+            tap here to open {label}
+          </a>.
+        </p>
+
+        <p style={{ fontSize: 14, color: '#999' }}>
+          Please include Booking ID <strong>{bookingId}</strong> in the notes.
+        </p>
+        <Button
+          variant="outlined"
+          size="medium"
+          onClick={() => navigator.clipboard.writeText(`Booking ID ${bookingId}`)}
+          sx={{ mt: 1, mb: 3, color: '#00ffa2', borderColor: '#00ffa2' }}
+        >
+          Copy Booking ID to Clipboard
+        </Button>
+
+        <img src={qrImage} style={{ borderRadius: 8, maxWidth: '100%', marginBottom: 12 }} alt={`${label} QR`} loading="lazy" />
+      </div>
+    );
+
+    switch (paymentMethod) {
+      case 'venmo':
+        return commonInstruction(venmoQr, venmoLink, 'Venmo');
+      case 'cashapp':
+        return commonInstruction(cashappQr, cashAppLink, 'Cash App');
+      case 'zelle':
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ fontSize: 16 }}>
+              To pay your deposit of <strong>${amount}</strong>, scan the QR and send payment via Zelle to <strong>youngavi03@yahoo.com</strong>.
+            </p>
+            <p style={{ fontSize: 14, color: '#999' }}>
+              Include Booking ID <strong>{bookingId}</strong> in the memo.
+            </p>
+            <img src={zelleQr} style={{ borderRadius: 8, maxWidth: '100%', marginBottom: 12 }} alt="Zelle QR" loading="lazy" />
+          </div>
+        );
+      case 'applepay':
+        return (
+          <div>
+            <p style={{ fontSize: 16 }}><strong>To pay with Apple Pay on your own:</strong></p>
+            <ol style={{ fontSize: 16 }}>
+              <li style={{ marginBottom: 16 }}>Open Wallet on your iPhone/Mac.</li>
+              <li style={{ marginBottom: 16 }}>Tap your card &gt; “Send”.</li>
+              <li style={{ marginBottom: 16 }}>Enter: <strong>youngavi03@yahoo.com</strong></li>
+              <li style={{ marginBottom: 16 }}>Enter amount: <strong>${amount}</strong>.</li>
+              <li>Hit “Pay” and include Booking ID <strong>{bookingId}</strong>.</li>
+            </ol>
+          </div>
+        );
+      case 'cash':
+        return (
+          <Card sx={{ backgroundColor: '#2c2c2c', color: 'white', p: 2, mt: 0, borderLeft: '6px solid #00ffa2' }}>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <AttachMoney sx={{ fontSize: 40, color: '#00ffa2' }} />
+              <div>
+                <p style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0 }}>
+                  Bring the full amount in <span style={{ color: '#00ffa2' }}>cash</span> on your session day.
+                </p>
+                <p style={{ fontSize: '0.95rem', marginTop: 4 }}>
+                  Please confirm by emailing <strong>frombelowstudio@gmail.com</strong>.
+                </p>
+              </div>
+            </Stack>
+          </Card>
+        );
+      case 'none':
+      default:
+        return <p style={{ color: 'red' }}><strong>Select a payment method.</strong></p>;
+    }
+  };
 
 
   const handlePaymentMethodChange = async (event) => {

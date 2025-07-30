@@ -18,6 +18,11 @@
   color: rgb(255 255 255 / 38%) !important;
 }
 
+.MuiPickerStaticWrapper-content .visually-disabled-day {
+  opacity: 0.4;
+  pointer-events: auto !important; /* Still clickable */
+}
+
 .MuiListItemText-secondary {
   color: rgba(255, 255, 255, 0.429) !important;
 }
