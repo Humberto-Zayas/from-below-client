@@ -1,4 +1,6 @@
 import * as React from 'react';
+import xIcon from '../../images/icons8-twitter.svg';
+import instagramIcon from '../../images/icons8-instagram-48.svg'
 
 export default function GeneralContact(props) {
 
@@ -13,7 +15,9 @@ export default function GeneralContact(props) {
           <a href="tel:609-469-4340" class="link-3">609-469-4340<br></br></a><span><span><span data-ix="contact-section-reveal" onClick={props.onClose} class="text-span-26"></span></span></span></h5>
         <div class="form-normal-social" style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: 0 }}>
           <span class="text-span-29"></span>
-          <a href="https://instagram.com/frombelowstudio" target="_blank" rel="noreferrer" style={{ marginRight: '10px' }} class="link-12"></a> | <a style={{ marginRight: '10px', marginLeft: '10px' }} href="https://twitter.com/frombelowstudio" target="_blank"  rel="noreferrer" class="link-5"></a> | <a style={{ marginLeft: '10px' }} href="https://facebook.com/frombelowstudio" target="_blank" rel="noreferrer" class="link-6"></a>
+          <a href="https://instagram.com/frombelowstudio" target="_blank" rel="noreferrer" style={{ marginRight: '10px', marginTop: '-7px' }} class="link-12"><img style={{width: '32px'}} src={instagramIcon} alt='From Below Instagram' /></a> | <a style={{ marginRight: '10px', marginTop: '-7px', marginLeft: '10px' }} href="https://x.com/frombelowstudio" target="_blank" rel="noreferrer" class="link-5"><img style={{width: '31px'}} src={xIcon} alt="From Below X Twitter" />
+
+          </a>
         </div>
         <div class="w-form">
           <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
@@ -25,7 +29,7 @@ export default function GeneralContact(props) {
           </form>
 
           <form action="/" id="wf-form-Contact-Form" name="wf-form-Contact-Form" data-name="Contact Form" method="post" class="form-2">
-          <input type="hidden" name="contact" value="contact" />
+            <input type="hidden" name="contact" value="contact" />
 
             <input type="text" class="text-field-3 w-input" autofocus="true" maxlength="256" name="name" data-name="name" placeholder="Enter your name" id="name-3" required="" />
             <input type="email" class="text-field-3 w-input" maxlength="256" name="emailAddress" data-name="emailAddress" placeholder="Enter your email" id="emailAddress" required="" />

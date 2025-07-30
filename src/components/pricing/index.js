@@ -1,15 +1,31 @@
 import React, { useState } from 'react';
+import Fade from '@mui/material/Fade';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid'; // Import Grid from @mui/material
 import Container from '@mui/material/Container';
 import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
 import GeneralContact from '../GeneralContact';
+import HorizontalLinearStepper from '../stepper'
 import PropTypes from 'prop-types';
 
-// ... rest of the imports ...
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '100%',
+  maxWidth: 400,
+  // bgcolor: 'background.paper',
+  // border: '2px solid #000',
+  boxShadow: 24,
+  height: '95%',
+  border: 'none',
+  overflow: 'scroll',
+  p: 4,
+};
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -94,7 +110,7 @@ function Pricing() {
                     Raw Mix Available
                   </li>
                   <li onClick={handleOpen} className="last-item-button list-item-2" >
-                    <span onClick={handleOpen} className="text-span-8">CONTACT</span>
+                    <span onClick={handleOpen} className="text-span-8">BOOK NOW</span>
                   </li>
                 </ul>
               </Grid>
@@ -119,7 +135,7 @@ function Pricing() {
                     10+ Hours/$490
                   </li>
                   <li onClick={handleOpen} className="last-item-button list-item-2">
-                    <span className="text-span-8">CONTACT</span>
+                    <span className="text-span-8">BOOK NOW</span>
                   </li>
                 </ul>
               </Grid>
@@ -141,7 +157,7 @@ function Pricing() {
                     *Pricing based on size of work
                   </li>
                   <li onClick={handleOpen} className="last-item-button list-item-2">
-                    <span className="text-span-8">CONTACT</span>
+                    <span className="text-span-8">BOOK NOW</span>
                   </li>
                 </ul>
               </Grid>
@@ -174,7 +190,14 @@ function Pricing() {
         onClose={handleClose}
         closeAfterTransition
       >
-        <GeneralContact onClose={handleClose} />
+        <Fade in={open}>
+          <Box className='div-block-42' sx={style}>
+            <div style={{ display: 'flex', justifyContent: 'end' }}>
+              <CloseIcon style={{ color: 'white' }} onClick={() => setOpen(false)} />
+            </div>
+            <HorizontalLinearStepper handleClose={handleClose}></HorizontalLinearStepper>
+          </Box>
+        </Fade>
       </Modal>
     </div>
   );

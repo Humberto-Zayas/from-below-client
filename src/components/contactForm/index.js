@@ -76,8 +76,15 @@ export default function ContactForm(props) {
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: 'rgba(255, 255, 255, 0.23)',
               },
+               "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+          display: "none",
+        },
+        "& input[type=number]": {
+          MozAppearance: "textfield",
+        },
             }}
             id="outlined-basic"
+            type="number"
             label="Enter Your Phone Number"
             variant="outlined"
             onChange={(event) => handleChange(event)}
@@ -120,7 +127,7 @@ export default function ContactForm(props) {
               required
             >
               <MenuItem value={'Instagram'}>Instagram</MenuItem>
-              <MenuItem value={'Twitter'}>Twitter</MenuItem>
+              <MenuItem value={'X'}>X</MenuItem>
               <MenuItem value={'Facebook'}>Facebook</MenuItem>
               <MenuItem value={'Referred/Recommended'}>Referred/Recommended</MenuItem>
               <MenuItem value={'Google Search'}>Google Search</MenuItem>

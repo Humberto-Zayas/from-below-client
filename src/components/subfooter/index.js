@@ -35,7 +35,7 @@ export default function Subfooter() {
           <img style={{ width: '200px', marginBottom: '3em' }} src={visaLogo} />
         </Grid>
         <Grid lg={3} md={3} sm={12} xs={12}>
-          <p style={{textAlign: 'center'}}><span className='misc-menu-item' onClick={handleOpen}>Studio Policy</span> <span className='misc-menu-item'>|</span> <span className='misc-menu-item'>Contact</span></p>
+          <p style={{textAlign: 'center'}}><span className='misc-menu-item' onClick={handleOpen}>Studio Policy</span> <span className='misc-menu-item'></span> </p>
 
         </Grid>
       </Grid>

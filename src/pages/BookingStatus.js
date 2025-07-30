@@ -495,7 +495,6 @@ const renderInstructions = () => {
                       }
                     }}
                   >
-                    <MenuItem value="none">None</MenuItem>
                     <MenuItem value="venmo">Venmo</MenuItem>
                     <MenuItem value="cashapp">Cash App</MenuItem>
                     <MenuItem value="zelle">Zelle</MenuItem>
