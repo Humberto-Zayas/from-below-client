@@ -5,7 +5,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import dayjs from 'dayjs';
-import {sendStatusEmail} from '../../utils/emailService';
+import { sendStatusEmail } from '../../utils/emailService';
 
 const api = process.env.REACT_APP_API_URL;
 
@@ -37,33 +37,39 @@ const AdminBookings = () => {
       });
   }, []);
 
-  const handleUpdateStatus = async (bookingId, bookingEmail, newStatus) => {
+  const handleUpdateStatus = async (bookingId, bookingEmail, newStatus, reason = '') => {
     try {
+      // Construct request body
+      const requestBody = { status: newStatus };
+      if (newStatus === 'denied' && reason) {
+        requestBody.reason = reason;
+      }
+
+      // Update booking in DB
       const response = await fetch(`${api}/bookings/bookings/${bookingId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          status: newStatus,
-        }),
+        body: JSON.stringify(requestBody),
       });
-  
+
       if (response.ok) {
+        // Update state
         const updatedBookings = bookings.map((booking) =>
           booking._id === bookingId ? { ...booking, status: newStatus } : booking
         );
         setBookings(updatedBookings);
-  
-        // Generate deposit link for confirmed bookings
+
+        // Generate deposit link if confirmed
         const depositLink =
           newStatus === 'confirmed'
             ? `${process.env.REACT_APP_FRONTEND_URL}/pay-deposit/${bookingId}`
             : null;
-  
-        // Send status email with the deposit link
-        await sendStatusEmail(bookingEmail, newStatus, bookingId, depositLink);
-  
+
+        // Send email (include reason if denied)
+        await sendStatusEmail(bookingEmail, newStatus, bookingId, depositLink, reason);
+
         alert(`Booking status updated and email sent to client.`);
       } else {
         console.error('Error updating booking status:', response.statusText);
@@ -74,7 +80,8 @@ const AdminBookings = () => {
       alert('An error occurred while updating the booking status.');
     }
   };
-  
+
+
   const handleDeleteBooking = async (bookingId) => {
     try {
       const response = await fetch(`${api}/bookings/bookings/${bookingId}`, {

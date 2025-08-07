@@ -43,16 +43,15 @@ export const sendEmail = async (to, subject, text, bookingDetails, isAdmin = fal
   return response.json();
 };
 
-export const sendStatusEmail = async (to, status, bookingId, depositLink = null) => {
+export const sendStatusEmail = async (to, status, bookingId, depositLink = null, reason = '') => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  // Send the status update request to your backend
   const response = await fetch(`${apiUrl}/email/send-status-email`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ to, status, bookingId, depositLink }), // Include depositLink
+    body: JSON.stringify({ to, status, bookingId, depositLink, reason }),
   });
 
   if (!response.ok) {

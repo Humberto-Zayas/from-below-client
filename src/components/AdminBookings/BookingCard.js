@@ -8,6 +8,7 @@ import { styled } from '@mui/system';
 import '../../pages/Admin.css';
 import EditBooking from './EditBooking';
 import DeleteBookingModal from './DeleteBookingModal';
+import DenyBookingModal from './DenyBookingModal';
 import { sendPaymentStatusEmail } from '../../utils/emailService';
 
 
@@ -40,6 +41,8 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(booking.paymentStatus || 'unpaid');
+  const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
+  const [denyReason, setDenyReason] = useState('');
 
   const handleDrawerOpen = () => {
     setIsDrawerOpen(true);
@@ -257,10 +260,9 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
                       borderColor: 'rgba(210, 210, 210, 0.3)'
                     }
                   }}
-                  onClick={() => handleUpdateStatus(booking._id, booking.email, 'denied')}
+                  onClick={() => setIsDenyModalOpen(true)}
                 >
                   {booking.status === 'denied' ? 'Denied' : 'Deny'}
-
                 </Button>
               </ButtonsWrapper>
             </ListItem>
@@ -290,6 +292,17 @@ const BookingCard = ({ booking, openCardId, toggleCard, handleUpdateStatus, hand
           closeDrawer={handleDrawerClose}
         />
       </Drawer>
+      <DenyBookingModal
+        isOpen={isDenyModalOpen}
+        onClose={() => setIsDenyModalOpen(false)}
+        denyReason={denyReason}
+        setDenyReason={setDenyReason}
+        onConfirm={() => {
+          handleUpdateStatus(booking._id, booking.email, 'denied', denyReason);
+          setIsDenyModalOpen(false);
+          setDenyReason('');
+        }}
+      />
     </Card>
   );
 };
