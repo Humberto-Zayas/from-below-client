@@ -133,7 +133,7 @@ const BookingStatus = () => {
         return (
           <div style={{ textAlign: 'center' }}>
             <p style={{ fontSize: 16 }}>
-              To pay your deposit of <strong>${amount}</strong>, scan the QR and send payment via Zelle to <strong>youngavi03@yahoo.com</strong>.
+              To pay your deposit of <strong>${amount}</strong>, scan the QR and send payment via Zelle to <strong>a.narang3@gmail.com</strong>
             </p>
             <p style={{ fontSize: 14, color: '#999' }}>
               Include Booking ID <strong>{bookingId}</strong> in the memo.
