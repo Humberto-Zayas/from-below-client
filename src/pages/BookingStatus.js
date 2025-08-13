@@ -133,8 +133,17 @@ const BookingStatus = () => {
         return (
           <div style={{ textAlign: 'center' }}>
             <p style={{ fontSize: 16 }}>
-              To pay your deposit of <strong>${amount}</strong>, scan the QR and send payment via Zelle to <strong>a.narang3@gmail.com</strong>
+              To pay your deposit of <strong>${amount}</strong>, scan the QR and send payment via Zelle to{" "}
+              <strong>a.narang3@gmail.com</strong>
             </p>
+            <Button
+              variant="outlined"
+              size="medium"
+              onClick={() => navigator.clipboard.writeText('a.narang3@gmail.com')}
+              sx={{ mt: 1, mb: 2, color: '#00ffa2', borderColor: '#00ffa2' }}
+            >
+              Copy Email to Clipboard
+            </Button>
             <p style={{ fontSize: 14, color: '#999' }}>
               Include Booking ID <strong>{bookingId}</strong> in the memo.
             </p>
@@ -148,12 +157,23 @@ const BookingStatus = () => {
             <ol style={{ fontSize: 16 }}>
               <li style={{ marginBottom: 16 }}>Open Wallet on your iPhone/Mac.</li>
               <li style={{ marginBottom: 16 }}>Tap your card &gt; “Send”.</li>
-              <li style={{ marginBottom: 16 }}>Enter: <strong>youngavi03@yahoo.com</strong></li>
+              <li style={{ marginBottom: 16 }}>
+                Enter: <strong>youngavi03@yahoo.com</strong>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => navigator.clipboard.writeText('youngavi03@yahoo.com')}
+                  sx={{ margin: '0 auto', mt: 2, color: '#00ffa2', borderColor: '#00ffa2' }}
+                >
+                  Copy Email
+                </Button>
+              </li>
               <li style={{ marginBottom: 16 }}>Enter amount: <strong>${amount}</strong>.</li>
               <li>Hit “Pay” and include Booking ID <strong>{bookingId}</strong>.</li>
             </ol>
           </div>
         );
+
       case 'cash':
         return (
           <Card sx={{ backgroundColor: '#2c2c2c', color: 'white', p: 2, mt: 0, borderLeft: '6px solid #00ffa2' }}>
