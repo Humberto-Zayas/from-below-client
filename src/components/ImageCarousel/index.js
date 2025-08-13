@@ -115,10 +115,43 @@ const ImageCarousel = ({ title, images }) => {
 						alignItems: 'center',
 						justifyContent: 'center',
 						height: '100vh',
-						outline: 'none'
+						outline: 'none',
+						position: 'relative',
+						backgroundColor: 'rgba(0,0,0,0.9)'
 					}}
-					onClick={handleClose}
+					onClick={handleClose} // clicking outside image closes modal
 				>
+					{/* Close button */}
+					<Button
+						onClick={(e) => { e.stopPropagation(); handleClose(); }}
+						sx={{
+							fontSize: 24,
+							position: 'absolute',
+							top: 20,
+							right: 20,
+							color: 'white',
+							minWidth: 'auto'
+						}}
+					>
+						✕
+					</Button>
+
+					{/* Back arrow */}
+					<Button
+						onClick={(e) => { e.stopPropagation(); handleBack(); }}
+						sx={{
+							position: 'absolute',
+							left: 20,
+							top: '50%',
+							transform: 'translateY(-50%)',
+							color: 'white',
+							minWidth: 'auto'
+						}}
+					>
+						<KeyboardArrowLeft sx={{ fontSize: '3rem' }} />
+					</Button>
+
+					{/* Image */}
 					<img
 						src={images[activeStep]}
 						alt={`Large view ${activeStep}`}
@@ -127,9 +160,26 @@ const ImageCarousel = ({ title, images }) => {
 							maxWidth: '90vw',
 							objectFit: 'contain',
 							borderRadius: 4,
-							boxShadow: '0 0 15px rgba(0,0,0,0.5)'
+							boxShadow: '0 0 15px rgba(0,0,0,0.5)',
+							cursor: 'pointer'
 						}}
+						onClick={(e) => e.stopPropagation()} // don't close when clicking image
 					/>
+
+					{/* Next arrow */}
+					<Button
+						onClick={(e) => { e.stopPropagation(); handleNext(); }}
+						sx={{
+							position: 'absolute',
+							right: 20,
+							top: '50%',
+							transform: 'translateY(-50%)',
+							color: 'white',
+							minWidth: 'auto'
+						}}
+					>
+						<KeyboardArrowRight sx={{ fontSize: '3rem' }} />
+					</Button>
 				</Box>
 			</Modal>
 		</>
