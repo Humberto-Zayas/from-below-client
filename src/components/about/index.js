@@ -21,7 +21,6 @@ import studio15 from '../../images/DSC08975.jpg';
 import gear1 from '../../images/DSC08739.jpg';
 import gear2 from '../../images/DSC08742.jpg';
 import gear3 from '../../images/DSC08746.jpg';
-import gear4 from '../../images/DSC08801.jpg';
 import gear5 from '../../images/DSC08850.jpg';
 import gear6 from '../../images/DSC08861.jpg';
 import gear7 from '../../images/DSC08866.jpg';
@@ -39,18 +38,24 @@ const studioImages = [
   studio7,
   studio8,
   studio9,
-  studio10
+  studio10,
+  studio11,
+  studio12,
+  studio13,
+  studio14,
+  studio15
 ];
 
 const gearImages = [
 	gear1,
 	gear2,
 	gear3,
-  gear4,
   gear5,
   gear6,
   gear7,
-  gear8
+  gear8,
+  gear9,
+  gear10
 ];
 
 export default function About() {
