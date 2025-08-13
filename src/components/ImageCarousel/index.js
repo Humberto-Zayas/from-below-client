@@ -36,17 +36,29 @@ const ImageCarousel = ({ title, images }) => {
           <div style={carouselStyle}>
             {images.map((image, index) => (
               <div
-                key={index}
-                className={`carousel-image ${index === activeStep ? 'active' : ''}`}
-                style={{ width: `${100 / images.length}%` }}
-              >
-                <img
-                  style={{ width: '100%', height: '100%', cursor: 'pointer' }}
-                  src={image}
-                  alt={`Image ${index}`}
-                  onClick={() => handleOpen(index)}
-                />
-              </div>
+  key={index}
+  className={`carousel-image ${index === activeStep ? 'active' : ''}`}
+  style={{
+    width: `${100 / images.length}%`,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: '#000' // helps with letterboxing look
+  }}
+>
+  <img
+    style={{
+      maxWidth: '100%',
+      maxHeight: '400px', // adjust carousel height here
+      objectFit: 'contain',
+      cursor: 'pointer'
+    }}
+    src={image}
+    alt={`Image ${index}`}
+    onClick={() => handleOpen(index)}
+  />
+</div>
+
             ))}
           </div>
         </Box>
