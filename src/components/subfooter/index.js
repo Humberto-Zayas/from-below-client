@@ -8,6 +8,11 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import visaLogo from '../../images/fbs-ccinfo.png'
+import venmoIco from '../../images/icons8-venmo-50.png'
+import cashappIco from '../../images/icons8-cash-app-48.png'
+import zelleIco from '../../images/icons8-zelle-48.png'
+import applepayIco from '../../images/icons8-apple-pay-50.png'
+import cashIco from '../../images/icons8-cash-48.png'
 
 const style = {
   position: 'absolute',
@@ -31,10 +36,14 @@ export default function Subfooter() {
     <>
 
       <Grid container spacing={2}>
-        <Grid lg={9} md={9} sm={12} xs={12}>
-          <img style={{ width: '200px', marginBottom: '3em' }} src={visaLogo} />
+        <Grid lg={10} md={9} sm={12} xs={12}>
+          <img style={{ width: '40px', marginBottom: '3em', marginRight: '1em' }} src={venmoIco} />
+          <img style={{ width: '32px', marginBottom: '3em', marginRight: '1em' }} src={cashappIco} />
+          <img style={{ width: '40px', marginBottom: '3em', marginRight: '1em' }} src={zelleIco} />
+          <img style={{ width: '48px', marginBottom: '3em', marginRight: '1em' }} src={applepayIco} />
+          <img style={{ width: '40px', marginBottom: '3.5em', marginRight: '1em' }} src={cashIco} />
         </Grid>
-        <Grid lg={3} md={3} sm={12} xs={12}>
+        <Grid lg={2} md={3} sm={12} xs={12}>
           <p style={{textAlign: 'center'}}><span className='misc-menu-item' onClick={handleOpen}>Studio Policy</span> <span className='misc-menu-item'></span> </p>
 
         </Grid>
