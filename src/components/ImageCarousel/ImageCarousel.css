@@ -5,7 +5,7 @@
   
   .carousel-image {
     width: 100%;
-    height: auto;
+    height: 330px;
     flex-shrink: 0;
   }
   .MuiMobileStepper-dot {

@@ -23,26 +23,29 @@ body {
   margin: 0;
 }
 
-.MuiStepLabel-labelContainer > .Mui-active {
+.MuiStepLabel-labelContainer>.Mui-active {
   color: white !important;
 }
-.MuiStepLabel-labelContainer > .Mui-completed {
+
+.MuiStepLabel-labelContainer>.Mui-completed {
   color: white !important;
 }
-.MuiStepLabel-labelContainer > .Mui-disabled {
+
+.MuiStepLabel-labelContainer>.Mui-disabled {
   color: gray !important;
 }
 
-.MuiStepLabel-iconContainer > .Mui-active {
+.MuiStepLabel-iconContainer>.Mui-active {
   color: #d1203d !important;
 }
 
-input, textarea { 
+input,
+textarea {
   color: whitesmoke !important;
 }
 
 /*Change text in autofill textbox*/
-input:-webkit-autofill{
+input:-webkit-autofill {
   /* -webkit-text-fill-color: yellow !important; */
   background-image: none !important;
   background-color: -internal-light-dark(transparent) !important;
@@ -73,6 +76,7 @@ label {
   margin-right: auto;
   /* Add automatic left margin to all items except the first one */
 }
+
 /* 
 .section {
   height: 100vh;
@@ -85,9 +89,11 @@ label {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  background-image: -webkit-linear-gradient(90deg, #111010, rgba(0, 0, 0, 0.55) 71%, rgba(0, 0, 0, 0.86) 96%), url('./images/IMG_20170722_142734_347_1500772896518.jpg');
-  background-image: linear-gradient(0deg, #111010, rgba(0, 0, 0, 0.55) 71%, rgba(0, 0, 0, 0.86) 96%), url('./images/IMG_20170722_142734_347_1500772896518.jpg');
-  background-position: 0px 0px, 50% 100%;
+  /* background-image: -webkit-linear-gradient(90deg, #111010, rgba(0, 0, 0, 0.55) 71%, rgba(0, 0, 0, 0.86) 96%), url('./images/IMG_20170722_142734_347_1500772896518.jpg');
+  background-image: linear-gradient(0deg, #111010, rgba(0, 0, 0, 0.55) 71%, rgba(0, 0, 0, 0.86) 96%), url('./images/IMG_20170722_142734_347_1500772896518.jpg'); */
+  background-image: -webkit-linear-gradient(0deg, #111010, rgba(0, 0, 0, 0.55) 71%, rgba(0, 0, 0, 0.86) 96%), url('./images/DSC08728.jpg');
+  background-image: linear-gradient(0deg, #111010, rgba(0, 0, 0, 0.55) 71%, rgba(0, 0, 0, 0.86) 96%), url('./images/DSC08728.jpg');
+  background-position: 0px 0px, 50% 80%;
   background-size: auto, cover;
   background-repeat: repeat, no-repeat;
   background-attachment: scroll, scroll;
@@ -116,10 +122,10 @@ label {
 
 .about {
   background-image: -webkit-linear-gradient(270deg, #111010, rgba(0, 0, 0, 0.65) 20%, rgba(0, 0, 0, 0.65) 80%, #111010), url('./images/06-outboard-01-newbg.jpeg');
-    background-image: linear-gradient(180deg, #111010, rgba(0, 0, 0, 0.65) 20%, rgba(0, 0, 0, 0.65) 80%, #111010), url('./images/06-outboard-01-newbg.jpeg');
-    background-position: 0px 0px, 50% 0px;
-    background-size: auto, cover;
-    background-repeat: repeat, no-repeat;
+  background-image: linear-gradient(180deg, #111010, rgba(0, 0, 0, 0.65) 20%, rgba(0, 0, 0, 0.65) 80%, #111010), url('./images/06-outboard-01-newbg.jpeg');
+  background-position: 0px 0px, 50% 0px;
+  background-size: auto, cover;
+  background-repeat: repeat, no-repeat;
 }
 
 .hero-h1 {
