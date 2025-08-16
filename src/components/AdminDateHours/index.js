@@ -26,7 +26,7 @@ export default function AdminDateHours() {
   const [multiSelect, setMultiSelect] = useState(false); // Toggle for multi-select mode
   const [selectedDates, setSelectedDates] = useState([]); // Array of selected dates
   const [disabledDatesList, setDisabledDatesList] = useState([]);
-  console.log('disabled days: ', disabledDatesList)
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
     console.log('value on useEffect: ', value)
@@ -86,7 +86,7 @@ export default function AdminDateHours() {
     };
 
     fetchDisabledDates();
-  }, []);
+  }, [refreshTrigger]);
 
   const handleDatePick = (selectedDate) => {
     const formattedDate = selectedDate.toISOString().split('T')[0];
@@ -200,6 +200,8 @@ export default function AdminDateHours() {
       .then((dataArray) => {
         console.log("Disabled state updated:", dataArray);
         setDayData(dataArray[0]); // Assuming all updates return the same format
+        // ✅ After API calls succeed, bump refreshTrigger to refetch
+        setRefreshTrigger((prev) => prev + 1);
       })
       .catch((error) => {
         console.error("Error updating disabled state:", error);
