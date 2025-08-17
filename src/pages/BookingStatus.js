@@ -3,7 +3,6 @@ import Header from '../components/navbar';
 import dayjs from 'dayjs';
 import { useSearchParams, Link } from "react-router-dom";
 import { AddToCalendarButton } from 'add-to-calendar-button-react';
-
 import { AppBar, Toolbar, Typography, Box, Divider, Container, Grid, MenuItem, Button, Select, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemText, Card, CardHeader, Stack } from '@mui/material';
 import { Email, CalendarToday, ListAlt, Phone, Logout, Receipt, Schedule, AttachMoney, Payment, Message, DeleteOutlined as DeleteOutlinedIcon } from '@mui/icons-material';
 import fbslogo from "../images/fbs-red-logo.jpeg";
@@ -386,6 +385,20 @@ const BookingStatus = () => {
         <Container sx={{ px: 0 }} maxWidth="md">
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} style={{ margin: '0 auto' }}>
+              <Typography
+              variant="h5"
+              component="h1"
+              style={{
+                color: "white",
+                fontFamily: "Lato, sans-serif",
+                fontWeight: 400,
+                textTransform: "uppercase",
+                margin: "0 auto 16px",
+                textAlign: 'center',
+              }}
+            >
+                Status: {booking.status}
+              </Typography>
               <Card sx={{ backgroundColor: '#202020', color: '#e7e7e7', maxWidth: 390, margin: '0 auto' }}>
                 <CardHeader
                   titleTypographyProps={{ variant: 'subtitle1' }}
