@@ -123,4 +123,22 @@ export const sendAdminCashPaymentNotification = async (
   return response.json();
 };
 
+export const sendContactEmail = async ({ name, email, phoneNumber, serviceType, referral, message }) => {
 
+  console.log('emailservice.js name', name) //undefined
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  const response = await fetch(`${apiUrl}/email/send-contact-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name, email, phoneNumber, serviceType, referral, message }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to send contact email');
+  }
+
+  return response.json();
+};
