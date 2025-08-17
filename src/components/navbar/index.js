@@ -199,28 +199,28 @@ function ResponsiveAppBar() {
         </Toolbar>
       </Container>
       <Modal
-  sx={{ overflow: 'scroll' }}
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
-  <Fade in={open}>
-    {modalContent === 'contact' ? (
-      <Box sx={{ mt: 5 }}>
-       
-        <GeneralContact onClose={handleClose} />
-      </Box>
-    ) : (
-      <Box className="div-block-42" sx={style}>
-        <div style={{ display: 'flex', justifyContent: 'end' }}>
-          <CloseIcon style={{ color: 'white' }} onClick={handleClose} />
-        </div>
-        <HorizontalLinearStepper onClose={handleClose} />
-      </Box>
-    )}
-  </Fade>
-</Modal>
+        sx={{ overflow: 'scroll' }}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Fade in={open}>
+          {modalContent === 'contact' ? (
+            <Box sx={{ mt: 5 }}>
+
+              <GeneralContact onClose={handleClose} />
+            </Box>
+          ) : (
+            <Box className="div-block-42" sx={style}>
+              <div style={{ display: 'flex', justifyContent: 'end' }}>
+                <CloseIcon style={{ color: 'white' }} onClick={handleClose} />
+              </div>
+              <HorizontalLinearStepper onClose={handleClose} />
+            </Box>
+          )}
+        </Fade>
+      </Modal>
 
     </AppBar>
   );

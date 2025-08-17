@@ -7,7 +7,7 @@ import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Unstable_Grid2';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
-const possibleHours = ['02 Hours/$70', '04 Hours/$130', '08 Hours/$270', '10 Hours/$340', 'Full Day 14+ Hours/$550'];
+const possibleHours = ['02 Hours/$100', '03 Hours/$150', '04 Hours/$190', '06 Hours/$290', '08 Hours/$390', '10 Hours/$490', 'Full Day 14+ Hours/$550'];
 
 export default function AdminSelectableHours(props) {
   const [checked, setChecked] = useState(possibleHours);

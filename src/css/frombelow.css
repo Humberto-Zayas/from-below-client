@@ -585,7 +585,7 @@ h5 {
 
 .mixing-pricing-1-desktop {
   display: inline-block;
-  width: 566px;
+  width: 33%;
   margin-right: 10px;
   margin-left: 10px;
   padding-left: 0px;
@@ -2769,7 +2769,7 @@ html.w-mod-js *[data-ix="pricing-item-reveal-8"] {
   }
 
   .mixing-pricing-1-desktop {
-    display: none;
+    /* display: none; */
     width: 100%;
     margin-right: 0px;
     margin-left: 0px;

@@ -62,13 +62,20 @@ function a11yProps(index) {
 
 function Pricing() {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [modalType, setModalType] = useState(null); // "contact" or "book"
+
+  const handleOpen = (type) => {
+    setModalType(type);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setModalType(null);
+  };
   const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const handleChange = (event, newValue) => setValue(newValue);
+
 
   return (
     <div className='section pricing' id="Pricing">
@@ -107,10 +114,10 @@ function Pricing() {
                     Industry Quality Recording
                   </li>
                   <li className="list-item-2">
-                    Raw Mix Available
+                    Rough Mixdown
                   </li>
-                  <li onClick={handleOpen} className="last-item-button list-item-2" >
-                    <span onClick={handleOpen} className="text-span-8">BOOK NOW</span>
+                  <li onClick={() => handleOpen("book")} className="last-item-button list-item-2" >
+                    <span className="text-span-8">BOOK NOW</span>
                   </li>
                 </ul>
               </Grid>
@@ -134,7 +141,7 @@ function Pricing() {
                   <li className="list-item-2">
                     10+ Hours/$490
                   </li>
-                  <li onClick={handleOpen} className="last-item-button list-item-2">
+                  <li onClick={() => handleOpen("book")} className="last-item-button list-item-2">
                     <span className="text-span-8">BOOK NOW</span>
                   </li>
                 </ul>
@@ -151,54 +158,79 @@ function Pricing() {
                     Please contact for more info.
                   </li>
                   <li className="list-item-2">
-                    Bundle packages based on customization
+                    Recording & Mixing Package
                   </li>
                   <li className="list-item-2">
-                    *Pricing based on size of work
+                    *Pricing based on size of work/project.
                   </li>
-                  <li onClick={handleOpen} className="last-item-button list-item-2">
-                    <span className="text-span-8">BOOK NOW</span>
+                  <li onClick={() => handleOpen("contact")} className="last-item-button list-item-2">
+                    <span className="text-span-8">CONTACT</span>
                   </li>
                 </ul>
               </Grid>
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <ul style={{ listStyleType: 'none', paddingLeft: '0', textAlign: 'center', width: '33%', margin: '0 auto' }} className="mixing-pricing-2-desktop w-list-unstyled">
+            <ul style={{ listStyleType: 'none', paddingLeft: '0', textAlign: 'center' }} className="mixing-pricing-1-desktop w-list-unstyled">
               <li className="first-item-title list-item-2">
-                Full Mix Down
+                Two Track Mix Down
               </li>
-              <li className="item-pricing list-item-2">$100/Song</li>
+              <li className="item-pricing list-item-2">
+                $100/Song
+              </li>
               <li className="list-item-2">
                 Online Mixing Service Available
               </li>
-              <li className="list-item-2">Industry Quality Mix Down</li>
-              <li className="list-item-2">Session/Project Bounce</li>
+              <li className="list-item-2">Industry Quality Outboard Gear/Plugins</li>
+              <li className="list-item-2">Two Track Mixdown</li>
               <li className="list-item-2">3 Revisions Included</li>
-              <li onClick={handleOpen} className="last-item-button list-item-2">
+              <li onClick={() => handleOpen("contact")} className="last-item-button list-item-2">
+                <span className="text-span-8">CONTACT</span>
+              </li>
+            </ul>
+            <ul style={{ listStyleType: 'none', paddingLeft: '0', textAlign: 'center', width: '33%', margin: '0 auto' }} className="mixing-pricing-2-desktop w-list-unstyled ">
+              <li className="first-item-title list-item-2">
+                Full Stem Mix Down
+              </li>
+              <li className="item-pricing list-item-2">
+                $150/Song
+              </li>
+              <li className="list-item-2">
+                Online Mixing Service Available
+              </li>
+              <li className="list-item-2">Industry Quality Outboard Gear/Plugins</li>
+              <li className="list-item-2">Full Stems Mixdown</li>
+              <li className="list-item-2">3 Revisions Included</li>
+              <li onClick={() => handleOpen("contact")} className="last-item-button list-item-2">
                 <span className="text-span-8">CONTACT</span>
               </li>
             </ul>
           </TabPanel>
+
         </Box>
       </Container>
       <Modal
-        sx={{ overflow: 'scroll' }}
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
         open={open}
         onClose={handleClose}
         closeAfterTransition
+        sx={{ overflow: 'scroll' }}
       >
         <Fade in={open}>
-          <Box className='div-block-42' sx={style}>
-            <div style={{ display: 'flex', justifyContent: 'end' }}>
-              <CloseIcon style={{ color: 'white' }} onClick={() => setOpen(false)} />
-            </div>
-            <HorizontalLinearStepper handleClose={handleClose}></HorizontalLinearStepper>
-          </Box>
+          {modalType === 'contact' ? (
+            <Box sx={{ mt: 5 }}>
+              <GeneralContact onClose={handleClose} />
+            </Box>
+          ) : (
+            <Box className="div-block-42" sx={style}>
+              <div style={{ display: 'flex', justifyContent: 'end' }}>
+                <CloseIcon style={{ color: 'white' }} onClick={handleClose} />
+              </div>
+              <HorizontalLinearStepper onClose={handleClose} />
+            </Box>
+          )}
         </Fade>
       </Modal>
+
     </div>
   );
 }

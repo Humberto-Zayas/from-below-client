@@ -11,10 +11,12 @@ import './AdminDateHours.css';
 const api = process.env.REACT_APP_API_URL;
 
 const hourOptions = [
-  { label: '2 Hours', price: '$70' },
-  { label: '4 Hours', price: '$130' },
-  { label: '8 Hours', price: '$270' },
-  { label: '10 Hours', price: '$340' },
+  { label: '2 Hours', price: '$100' },
+  { label: '3 Hours', price: '$150' },
+  { label: '4 Hours', price: '$190' },
+  { label: '6 Hours', price: '$290' },
+  { label: '8 Hours', price: '$390' },
+  { label: '10 Hours', price: '$490' },
   { label: 'Full Day 14+ Hours', price: '$550' },
 ];
 

@@ -48,25 +48,37 @@ export default function SelectableHours(props) {
               selected={selectedIndex === 0}
               onClick={(event) => handleListItemClick(event, 0)}
             >
-              <ListItemText style={{color: '#bcbcbc'}} primary="2 Hours/$70" />
+              <ListItemText style={{color: '#bcbcbc'}} primary="2 Hours/$100" />
+            </ListItemButton>
+            <ListItemButton
+              selected={selectedIndex === 0}
+              onClick={(event) => handleListItemClick(event, 0)}
+            >
+              <ListItemText style={{color: '#bcbcbc'}} primary="3 Hours/$150" />
             </ListItemButton>
             <ListItemButton
               selected={selectedIndex === 1}
               onClick={(event) => handleListItemClick(event, 1)}
             >
-              <ListItemText style={{color: '#bcbcbc'}} primary="4 Hours/$130" />
+              <ListItemText style={{color: '#bcbcbc'}} primary="4 Hours/$190" />
+            </ListItemButton>
+             <ListItemButton
+              selected={selectedIndex === 1}
+              onClick={(event) => handleListItemClick(event, 1)}
+            >
+              <ListItemText style={{color: '#bcbcbc'}} primary="6 Hours/$290" />
             </ListItemButton>
             <ListItemButton
               selected={selectedIndex === 2}
               onClick={(event) => handleListItemClick(event, 2)}
             >
-              <ListItemText style={{color: '#bcbcbc'}} primary="8 Hours/$270" />
+              <ListItemText style={{color: '#bcbcbc'}} primary="8 Hours/$390" />
             </ListItemButton>
             <ListItemButton
               selected={selectedIndex === 3}
               onClick={(event) => handleListItemClick(event, 3)}
             >
-              <ListItemText style={{color: '#bcbcbc'}} primary="10 Hours/$340" />
+              <ListItemText style={{color: '#bcbcbc'}} primary="10 Hours/$490" />
             </ListItemButton>
             <ListItemButton
               selected={selectedIndex === 4}
