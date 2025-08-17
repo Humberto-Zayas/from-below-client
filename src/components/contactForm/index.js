@@ -32,6 +32,34 @@ export default function ContactForm(props) {
     });
   };
 
+  const handlePhoneChange = (event) => {
+    const { name, value } = event.target;
+
+    // Remove all non-digit characters
+    const digits = value.replace(/\D/g, '');
+
+    // Format as US phone number: 123-456-7890
+    let formatted = digits;
+    if (digits.length > 3 && digits.length <= 6) {
+      formatted = digits.slice(0, 3) + '-' + digits.slice(3);
+    } else if (digits.length > 6) {
+      formatted = digits.slice(0, 3) + '-' + digits.slice(3, 6) + '-' + digits.slice(6, 10);
+    }
+
+    // Update state
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: formatted,
+    }));
+
+    props.formCapture({
+      ...formData,
+      [name]: formatted,
+      date: props.date,
+      hours: props.hours,
+    });
+  };
+
   return (
     <>
       <form>
@@ -76,18 +104,19 @@ export default function ContactForm(props) {
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: 'rgba(255, 255, 255, 0.23)',
               },
-               "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
-          display: "none",
-        },
-        "& input[type=number]": {
-          MozAppearance: "textfield",
-        },
+              "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+                display: "none",
+              },
+              "& input[type=number]": {
+                MozAppearance: "textfield",
+              },
             }}
             id="outlined-basic"
-            type="number"
+            type="text"
             label="Enter Your Phone Number"
             variant="outlined"
-            onChange={(event) => handleChange(event)}
+            onChange={handlePhoneChange}
+            value={formData.phoneNumber || ''}
             required
           />
 

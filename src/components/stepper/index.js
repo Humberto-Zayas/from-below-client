@@ -9,7 +9,6 @@ import dayjs from 'dayjs';
 import BasicDatePicker from '../BasicDatePicker';
 import ContactForm from '../contactForm';
 import SelectableHours from '../SelectableHours';
-import { sendEmail } from '../../utils/emailService';
 
 const steps = ['Pick A Date', 'Pick Your Hours', 'Enter Your Information'];
 const api = process.env.REACT_APP_API_URL;
@@ -73,9 +72,6 @@ export default function HorizontalLinearStepper({ handleClose }) {
   const handleFormFinished = (formData) => {
     setFormState({ ...formState, ...formData }); // Merge the captured form data into the state
   };
-
-  console.log('parent form state: ', formState);
-
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
