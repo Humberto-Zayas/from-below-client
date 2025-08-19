@@ -126,6 +126,9 @@ function Pricing() {
                   <li className="first-item-title list-item-2">
                     Recording Blocks
                   </li>
+                   <li className="list-item-2">
+                    2 Hours/$100
+                  </li>
                   <li className="list-item-2">
                     3 Hours/$150
                   </li>
@@ -141,6 +144,9 @@ function Pricing() {
                   <li className="list-item-2">
                     10+ Hours/$490
                   </li>
+                  <li className="list-item-2">
+                    Full Day 14+ Hours/$550
+                  </li>
                   <li onClick={() => handleOpen("book")} className="last-item-button list-item-2">
                     <span className="text-span-8">BOOK NOW</span>
                   </li>
@@ -148,20 +154,20 @@ function Pricing() {
               </Grid>
               <Grid item lg={4} md={4} sm={12} xs={12}>
                 <ul style={{ listStyleType: 'none', paddingLeft: '0', textAlign: 'center' }} className="recording-pricing-3-desktop w-list-unstyled">
-                  <li className="first-item-title list-item-2">
+                  {/* <li className="first-item-title list-item-2">
                     Hour Bundles
-                  </li>
+                  </li> */}
                   <li className="item-pricing list-item-2">
                     Customize*<br /><span className="text-span-7">*Pricing varies</span>
                   </li>
                   <li className="list-item-2">
-                    Please contact for more info.
+                    Please contact for more info
                   </li>
                   <li className="list-item-2">
-                    Recording & Mixing Package
+                    Recording & <br />Mixing Package
                   </li>
-                  <li className="list-item-2">
-                    *Pricing based on size of work/project.
+                  <li style={{padding: '29px 0'}} className="list-item-2">
+                    *Pricing based on size of work to based on&nbsp;project
                   </li>
                   <li onClick={() => handleOpen("contact")} className="last-item-button list-item-2">
                     <span className="text-span-8">CONTACT</span>
