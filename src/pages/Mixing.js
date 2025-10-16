@@ -48,7 +48,7 @@ export default function Mixing() {
     setIsPlaying(!isPlaying);
   };
 
-  // Update progress bar as the audio plays
+  // Update progress as audio plays
   useEffect(() => {
     const activeAudio = current === "before" ? beforeRef.current : afterRef.current;
     if (!activeAudio) return;
@@ -67,6 +67,20 @@ export default function Mixing() {
       activeAudio.removeEventListener("timeupdate", updateProgress);
     };
   }, [current]);
+
+  // Handle seeking when clicking progress bar
+  const handleSeek = (e) => {
+    const activeAudio = current === "before" ? beforeRef.current : afterRef.current;
+    if (!activeAudio || !activeAudio.duration) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+    const newTime = (clickX / width) * activeAudio.duration;
+
+    activeAudio.currentTime = newTime;
+    setProgress((newTime / activeAudio.duration) * 100);
+  };
 
   return (
     <>
@@ -149,7 +163,7 @@ export default function Mixing() {
           </ToggleButton>
         </ToggleButtonGroup>
 
-        {/* Play/Pause Button */}
+        {/* Play/Pause Button + Progress Bar */}
         <Box sx={{ mt: 4, width: "100%" }}>
           <Button
             variant="contained"
@@ -166,8 +180,15 @@ export default function Mixing() {
             {isPlaying ? "Pause" : "Play"}
           </Button>
 
-          {/* Progress Bar */}
-          <Box sx={{ mt: 3 }}>
+          {/* Interactive Progress Bar */}
+          <Box
+            sx={{
+              mt: 3,
+              cursor: "pointer",
+              width: "100%",
+            }}
+            onClick={handleSeek}
+          >
             <LinearProgress
               variant="determinate"
               value={progress}
