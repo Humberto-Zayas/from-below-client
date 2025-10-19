@@ -2,19 +2,38 @@ import { Container, Typography } from "@mui/material";
 import Header from "../components/navbar";
 import MixToggleGroup from "../components/MixToggleGroup";
 import PlaybackControls from "../components/PlaybackControls";
+import TrackSelector from "../components/TrackSelector";
 import useAudioABTest from "../hooks/useAudioABTest";
+
+const tracks = [
+  {
+    name: "no_way_out_test1",
+    displayName: "No Way Out (Test 1)",
+    before: "/audio/No_Way_Out_Rough.mp3",
+    after: "/audio/No_Way_Out_Master.mp3",
+  },
+  {
+    name: "no_way_out_test2",
+    displayName: "No Way Out (Test 2)",
+    before: "/audio/No_Way_Out_Rough.mp3",
+    after: "/audio/No_Way_Out_Master.mp3",
+  },
+];
+
 
 export default function Mixing() {
   const {
     beforeRef,
     afterRef,
-    current,
+    currentTrack,
+    currentVersion,
     isPlaying,
     progress,
     handleToggle,
     handlePlayPause,
     handleSeek,
-  } = useAudioABTest("/audio/No_Way_Out_Rough.mp3", "/audio/No_Way_Out_Master.mp3");
+    handleTrackChange,
+  } = useAudioABTest(tracks);
 
   return (
     <>
@@ -33,7 +52,13 @@ export default function Mixing() {
           Mixing / Mastering A/B Test
         </Typography>
 
-        <MixToggleGroup current={current} onChange={handleToggle} />
+        <TrackSelector
+          tracks={tracks}
+          currentTrack={currentTrack}
+          onChange={handleTrackChange}
+        />
+
+        <MixToggleGroup current={currentVersion} onChange={handleToggle} />
 
         <PlaybackControls
           isPlaying={isPlaying}
@@ -42,8 +67,8 @@ export default function Mixing() {
           onSeek={handleSeek}
         />
 
-        <audio ref={beforeRef} src="/audio/No_Way_Out_Rough.mp3" preload="auto" />
-        <audio ref={afterRef} src="/audio/No_Way_Out_Master.mp3" preload="auto" />
+        <audio ref={beforeRef} src={currentTrack.before} preload="auto" />
+        <audio ref={afterRef} src={currentTrack.after} preload="auto" />
       </Container>
     </>
   );
