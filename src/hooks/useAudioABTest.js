@@ -1,115 +1,171 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-export default function useAudioABTest(tracks) {
-  const beforeRef = useRef(null);
-  const afterRef = useRef(null);
+export default function useAudioABTest(initialTracks) {
+  const [trackStates, setTrackStates] = useState(
+    initialTracks.map((t) => ({
+      ...t,
+      version: "before",
+      isPlaying: false,
+      progress: 0,
+      beforeRef: null,
+      afterRef: null,
+    }))
+  );
 
-  const [currentTrack, setCurrentTrack] = useState(tracks[0]);
-  const [currentVersion, setCurrentVersion] = useState("before");
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
+  // Stop all other tracks when one starts
+  const stopAllExcept = (id) => {
+    setTrackStates((prev) =>
+      prev.map((t) => {
+        if (t.id !== id) {
+          t.beforeRef?.pause();
+          t.afterRef?.pause();
+          return { ...t, isPlaying: false };
+        }
+        return t;
+      })
+    );
+  };
 
-  const getActiveAudio = () =>
-    currentVersion === "before" ? beforeRef.current : afterRef.current;
-
-  // 🔄 Handle A/B toggle — keep same position, do NOT reset
-  const handleToggle = (_, newValue) => {
+  // Toggle A/B version
+  const handleToggleVersion = (id, newValue) => {
     if (!newValue) return;
 
-    const currentAudio = getActiveAudio();
-    const nextAudio =
-      newValue === "before" ? beforeRef.current : afterRef.current;
+    setTrackStates((prev) =>
+      prev.map((t) => {
+        if (t.id === id) {
+          const currentAudio =
+            t.version === "before" ? t.beforeRef : t.afterRef;
+          const nextAudio =
+            newValue === "before" ? t.beforeRef : t.afterRef;
+          if (!currentAudio || !nextAudio) return t;
 
-    if (currentAudio && nextAudio) {
-      // 👇 carry over currentTime for true A/B comparison
-      nextAudio.currentTime = currentAudio.currentTime;
-
-      // if currently playing, switch seamlessly
-      if (isPlaying) {
-        currentAudio.pause();
-        nextAudio.play();
-      }
-    }
-
-    setCurrentVersion(newValue);
+          nextAudio.currentTime = currentAudio.currentTime;
+          if (t.isPlaying) {
+            currentAudio.pause();
+            nextAudio.play();
+          }
+          return { ...t, version: newValue };
+        }
+        return t;
+      })
+    );
   };
 
-  // ▶️ / ⏸️ Play or pause
-  const handlePlayPause = () => {
-    const activeAudio = getActiveAudio();
-    if (!activeAudio) return;
+  // Play / Pause logic
+  const handlePlayPause = (id) => {
+    setTrackStates((prev) => {
+      const clickedTrack = prev.find((t) => t.id === id);
+      const isPlaying = clickedTrack?.isPlaying;
 
-    if (isPlaying) {
-      activeAudio.pause();
-      setIsPlaying(false);
-    } else {
-      activeAudio.play();
-      setIsPlaying(true);
-    }
+      return prev.map((t) => {
+        const audio =
+          t.version === "before" ? t.beforeRef : t.afterRef;
+
+        if (t.id === id) {
+          if (isPlaying) {
+            audio?.pause();
+            return { ...t, isPlaying: false };
+          } else {
+            prev.forEach((other) => {
+              if (other.id !== id) {
+                other.beforeRef?.pause();
+                other.afterRef?.pause();
+              }
+            });
+            if (audio) {
+              audio.currentTime = audio.currentTime || 0;
+              audio.play();
+            }
+            return { ...t, isPlaying: true };
+          }
+        }
+        return { ...t, isPlaying: false };
+      });
+    });
   };
 
-  // ⏩ Seek in progress bar
-  const handleSeek = (e) => {
-    const activeAudio = getActiveAudio();
-    if (!activeAudio || !activeAudio.duration) return;
+  // ✅ Fixed seek logic
+  const handleSeek = (trackId, e) => {
+    const track = trackStates.find((t) => t.id === trackId);
+    if (!track) return;
 
-    const rect = e.currentTarget.getBoundingClientRect();
+    const audio =
+      track.version === "before"
+        ? track.beforeRef
+        : track.afterRef;
+    if (!audio) return;
+
+    const progressBar = e.currentTarget;
+    if (!progressBar) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    if (!rect?.width) return;
+
     const clickX = e.clientX - rect.left;
-    const newTime = (clickX / rect.width) * activeAudio.duration;
+    const seekRatio = Math.min(Math.max(clickX / rect.width, 0), 1);
+    const seekTime = seekRatio * (audio.duration || 0);
 
-    activeAudio.currentTime = newTime;
-    setProgress((newTime / activeAudio.duration) * 100);
+    if (!isNaN(seekTime)) {
+      audio.currentTime = seekTime;
+    }
+
+    setTrackStates((prev) =>
+      prev.map((t) =>
+        t.id === trackId ? { ...t, progress: seekRatio * 100 } : t
+      )
+    );
   };
 
-  // 🎵 Handle track change — fully reset playback
-  const handleTrackChange = (track) => {
-    // Pause both before switching
-    beforeRef.current?.pause();
-    afterRef.current?.pause();
-
-    // Reset playback positions
-    if (beforeRef.current) beforeRef.current.currentTime = 0;
-    if (afterRef.current) afterRef.current.currentTime = 0;
-
-    // Update state
-    setCurrentTrack(track);
-    setCurrentVersion("before");
-    setIsPlaying(false);
-    setProgress(0);
-  };
-
-  // Track playback progress
+  // Track progress
   useEffect(() => {
-    const activeAudio = getActiveAudio();
-    if (!activeAudio) return;
+    const cleanups = trackStates.map((track) => {
+      const audio =
+        track.version === "before" ? track.beforeRef : track.afterRef;
+      if (!audio) return null;
 
-    const updateProgress = () => {
-      if (activeAudio.duration) {
-        setProgress((activeAudio.currentTime / activeAudio.duration) * 100);
-      }
-    };
+      const updateProgress = () => {
+        setTrackStates((prev) =>
+          prev.map((t) =>
+            t.id === track.id
+              ? {
+                  ...t,
+                  progress:
+                    audio.duration > 0
+                      ? (audio.currentTime / audio.duration) * 100
+                      : 0,
+                }
+              : t
+          )
+        );
+      };
 
-    const handleEnd = () => setIsPlaying(false);
+      const handleEnd = () =>
+        setTrackStates((prev) =>
+          prev.map((t) =>
+            t.id === track.id
+              ? { ...t, isPlaying: false, progress: 0 }
+              : t
+          )
+        );
 
-    activeAudio.addEventListener("timeupdate", updateProgress);
-    activeAudio.addEventListener("ended", handleEnd);
+      audio.addEventListener("timeupdate", updateProgress);
+      audio.addEventListener("ended", handleEnd);
 
-    return () => {
-      activeAudio.removeEventListener("timeupdate", updateProgress);
-      activeAudio.removeEventListener("ended", handleEnd);
-    };
-  }, [currentVersion, currentTrack]);
+      return () => {
+        audio.removeEventListener("timeupdate", updateProgress);
+        audio.removeEventListener("ended", handleEnd);
+      };
+    });
+
+    return () => cleanups.forEach((fn) => fn && fn());
+  }, [trackStates]);
 
   return {
-    beforeRef,
-    afterRef,
-    currentTrack,
-    currentVersion,
-    isPlaying,
-    progress,
-    handleToggle,
+    trackStates,
+    setTrackStates,
     handlePlayPause,
+    handleToggleVersion,
     handleSeek,
-    handleTrackChange,
+    stopAllExcept,
   };
 }
