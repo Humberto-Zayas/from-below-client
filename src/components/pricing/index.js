@@ -126,7 +126,7 @@ function Pricing() {
                   <li className="first-item-title list-item-2">
                     Recording Blocks
                   </li>
-                   <li className="list-item-2">
+                  <li className="list-item-2">
                     2 Hours/$100
                   </li>
                   <li className="list-item-2">
@@ -166,7 +166,7 @@ function Pricing() {
                   <li className="list-item-2">
                     Recording & <br />Mixing Package
                   </li>
-                  <li style={{padding: '29px 0'}} className="list-item-2">
+                  <li style={{ padding: '29px 0' }} className="list-item-2">
                     *Pricing based on size of work to based on&nbsp;project
                   </li>
                   <li onClick={() => handleOpen("contact")} className="last-item-button list-item-2">
@@ -177,40 +177,65 @@ function Pricing() {
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <ul style={{ listStyleType: 'none', paddingLeft: '0', textAlign: 'center' }} className="mixing-pricing-1-desktop w-list-unstyled">
-              <li className="first-item-title list-item-2">
-                Two Track Mix Down
-              </li>
-              <li className="item-pricing list-item-2">
-                $100/Song
-              </li>
-              <li className="list-item-2">
-                Online Mixing Service Available
-              </li>
-              <li className="list-item-2">Industry Quality Outboard Gear/Plugins</li>
-              <li className="list-item-2">Two Track Mixdown</li>
-              <li className="list-item-2">3 Revisions Included</li>
-              <li onClick={() => handleOpen("contact")} className="last-item-button list-item-2">
-                <span className="text-span-8">CONTACT</span>
-              </li>
-            </ul>
-            <ul style={{ listStyleType: 'none', paddingLeft: '0', textAlign: 'center', width: '33%', margin: '0 auto' }} className="mixing-pricing-2-desktop w-list-unstyled ">
-              <li className="first-item-title list-item-2">
-                Full Stem Mix Down
-              </li>
-              <li className="item-pricing list-item-2">
-                $150/Song
-              </li>
-              <li className="list-item-2">
-                Online Mixing Service Available
-              </li>
-              <li className="list-item-2">Industry Quality Outboard Gear/Plugins</li>
-              <li className="list-item-2">Full Stems Mixdown</li>
-              <li className="list-item-2">3 Revisions Included</li>
-              <li onClick={() => handleOpen("contact")} className="last-item-button list-item-2">
-                <span className="text-span-8">CONTACT</span>
-              </li>
-            </ul>
+            <Grid container spacing={2}>
+              <Grid item lg={4} md={4} sm={12} xs={12}>
+                <ul style={{ listStyleType: 'none', paddingLeft: '0', textAlign: 'center' }} className='recording-pricing-1-desktop'>
+                  <li className="first-item-title list-item-2">
+                    Two Track Mix Down
+                  </li>
+                  <li className="item-pricing list-item-2">
+                    $100/Song
+                  </li>
+                  <li className="list-item-2">
+                    Online Mixing Service Available
+                  </li>
+                  <li className="list-item-2">Industry Quality Outboard Gear/Plugins</li>
+                  <li className="list-item-2">Two Track Mixdown</li>
+                  <li className="list-item-2">3 Revisions Included</li>
+                  <li onClick={() => handleOpen("contact")} className="last-item-button list-item-2">
+                    <span className="text-span-8">CONTACT</span>
+                  </li>
+                </ul>
+              </Grid>
+              <Grid item lg={4} md={4} sm={12} xs={12}>
+              <ul style={{ listStyleType: 'none', paddingLeft: '0', textAlign: 'center' }} className='recording-pricing-2-desktop'>
+                <li className="first-item-title list-item-2">
+                  AI Stem Separation
+                </li>
+                <li className="item-pricing list-item-2">
+                  $125/Song
+                </li>
+                <li className="list-item-2">
+                  Online Mixing Service Available
+                </li>
+                <li className="list-item-2">Industry Quality Outboard Gear/Plugins</li>
+                <li className="list-item-2">AI Separate Stems</li>
+                <li className="list-item-2">3 Revisions Included</li>
+                <li onClick={() => handleOpen("contact")} className="last-item-button list-item-2">
+                  <span className="text-span-8">CONTACT</span>
+                </li>
+              </ul>
+              </Grid>
+              <Grid item lg={4} md={4} sm={12} xs={12}>
+               <ul style={{ listStyleType: 'none', paddingLeft: '0', textAlign: 'center' }} className="recording-pricing-3-desktop w-list-unstyled">
+                <li className="first-item-title list-item-2">
+                  Full Stem Mix Down
+                </li>
+                <li className="item-pricing list-item-2">
+                  $150/Song
+                </li>
+                <li className="list-item-2">
+                  Online Mixing Service Available
+                </li>
+                <li className="list-item-2">Industry Quality Outboard Gear/Plugins</li>
+                <li className="list-item-2">Full Stems Mixdown</li>
+                <li className="list-item-2">3 Revisions Included</li>
+                <li onClick={() => handleOpen("contact")} className="last-item-button list-item-2">
+                  <span className="text-span-8">CONTACT</span>
+                </li>
+              </ul>
+              </Grid>
+            </Grid>
           </TabPanel>
 
         </Box>
