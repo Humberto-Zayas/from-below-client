@@ -2,8 +2,7 @@
   "name": "from-below-client",
   "version": "0.1.0",
   "engines": {
-    "node": "16.20.2",
-    "npm": "8.19.4"
+    "node": "20.20.0"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
